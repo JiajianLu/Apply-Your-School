@@ -2,12 +2,13 @@
 <html>
 <head>
 	<title>Import Data</title>
+	<script type="text/javascript" src="static/js/import.js"></script>
 </head>
 <body>
-	<form enctype="multipart/form-data" action="https://localhost:5001/upload?upload_progress_id=12344" method="POST">
+	<form enctype="multipart/form-data" action="https://0.0.0.0:5000/import" method="GET">
 <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
-Choose a file to upload: <input name="uploadedfile" type="file" /><br />
-<input type="submit" value="Upload File" />
+Choose a file to upload: <input id="file-select" name="uploadedfile" type="file" multiple/><br />
+<button type="submit" id="upload-button">Upload</button>
 </form>
 </body>
 </html>
