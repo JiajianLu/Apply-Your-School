@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Programs in {{contents['school'] }}</title>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h2>Result Table</h2>       
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Program Name</th>
+        <th>Size</th>
+        <th>Degree</th>
+        <th>Department</th>
+        <th>GPA</th>
+        <th>Program Length</th>
+        <th>Starting Salary</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%for content in contents%}
+      <tr>
+        <td>{{content['program_name']}}</td>
+        <td>{{content['size']}}</td>
+        <td>{{content['degree']}}</td>
+        <td>{{content['department']}}</td>
+        <td>{{content['acc_rate']}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

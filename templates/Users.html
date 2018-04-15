@@ -88,6 +88,8 @@
       <tr>
         <th>School Name</th>
         <th>Ranking</th>
+        <th>State</th>
+        <th>City</th>
         <th>School Size</th>
         <th>Average Test Score</th>
         <th>Acceptance Rate</th>
@@ -96,11 +98,14 @@
     <tbody>
       {%for content in contents%}
       <tr>
-        <td>{{content['school']}}</td>
-        <td>{{content['rank']}}</td>
+        <td><a href="/{{content['school']}}">{{content['school']}}</a></td>
+        <td><a href="/{{content['rank']}}">{{content['rank']}}</a></td>
+        <td>{{content['state']}}</td>
+        <td><a href="/{{content['city']}}">{{content['city']}}</a></td>
         <td>{{content['size']}}</td>
         <td>{{content['avg_test_score']}}</td>
         <td>{{content['acc_rate']}}</td>
+
       </tr>
       {% endfor %}
     </tbody>

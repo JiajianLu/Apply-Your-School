@@ -2,13 +2,29 @@
 <html>
 <head>
 	<title>Import Data</title>
-	<script type="text/javascript" src="static/js/import.js"></script>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<form enctype="multipart/form-data" action="https://0.0.0.0:5000/import" method="GET">
+	<form enctype="multipart/form-data" action="/import" method="GET" id="file-form">
 <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
-Choose a file to upload: <input id="file-select" name="uploadedfile" type="file" multiple/><br />
+Choose a file to upload: <input id="file-select" name="uploadedfile" type="file"/><br />
+<div class="form-group" id="elementId">
+<label for="sel1">Select tables to import data:</label>
+ <select multiple class="form-control" id="sel1" name="tables">
+  {%for table in tables%}
+  <option value="{{table['table_name']}}">{{table['table_name']}} Table</option>
+  {% endfor %}
+  </select>       
+</div>
 <button type="submit" id="upload-button">Upload</button>
 </form>
+<div class="container">
+  <h2>{{contents}}</h2>       
+</div>
 </body>
+<script type="text/javascript" src="static/js/import.js"></script>
 </html>
