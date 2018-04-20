@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Find a program</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<h1>Find a program to apply</h1>
+<form action="/search/programs" method="POST">
+  <div class="form-group">
+    <label for="program_name">Program Name</label>
+    <input class="form-control" id="program_name" name="program_name">
+  </div>
+  <label for="ranking_range">Ranking Range</label>
+    <div class="row">
+      <div class="col-lg-6">
+        <input class="form-control" id="ranking_range1" name="ranking_range1">
+      </div>To
+      <div class="col-lg-6">
+        <input class="form-control" id="ranking_range2" name="ranking_range2">
+      </div>
+    </div>
+<div class="form-group">
+  <label for="degree">Select Degree:</label>
+ <select class="form-control" id="degree" name="degree">
+  <option value="undergrad">Undergrad</option>
+  <option value="grad">Grad</option>
+</select>
+<label for="tuition_range">Tuition Range</label>
+    <div class="row">
+      <div class="col-lg-6">
+        <input class="form-control" id="tuition_range1" name="tuition_range1">
+      </div>To
+      <div class="col-lg-6">
+        <input class="form-control" id="tuition_range2" name="tuition_range2">
+      </div>
+    </div>
+</div>
+  <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+  <div class="container">
+  <a href="/programs" class="">Looking for a program?</a>
+  <h2>Result Table</h2>       
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>School Name</th>
+        <th>Ranking</th>
+        <th>State</th>
+        <th>City</th>
+        <th>School Size</th>
+        <th>Average Test Score</th>
+        <th>Acceptance Rate</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%for content in contents%}
+      <tr>
+        <td><a href="/{{content['school']}}">{{content['school']}}</a></td>
+        <td><a href="/{{content['rank']}}">{{content['rank']}}</a></td>
+        <td>{{content['state']}}</td>
+        <td><a href="/{{content['city']}}">{{content['city']}}</a></td>
+        <td>{{content['size']}}</td>
+        <td>{{content['avg_test_score']}}</td>
+        <td>{{content['acc_rate']}}</td>
+
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

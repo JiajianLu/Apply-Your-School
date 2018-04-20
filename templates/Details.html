@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Programs in {{contents['school'] }}</title>
+	<title>Detail of {{table}}</title>
 	<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -14,23 +14,17 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Program Name</th>
-        <th>Size</th>
-        <th>Degree</th>
-        <th>Department</th>
-        <th>GPA</th>
-        <th>Program Length</th>
-        <th>Starting Salary</th>
+        {%for column in columns%}
+        <th>{{column}}</th>
+        {% endfor %}
       </tr>
     </thead>
     <tbody>
       {%for content in contents%}
       <tr>
-        <td>{{content['program_name']}}</td>
-        <td>{{content['size']}}</td>
-        <td>{{content['degree']}}</td>
-        <td>{{content['department']}}</td>
-        <td>{{content['acc_rate']}}</td>
+        {%for column in columns%}
+        <td>{{content[column]}}</td>
+        {% endfor %}
       </tr>
       {% endfor %}
     </tbody>

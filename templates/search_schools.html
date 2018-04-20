@@ -10,7 +10,7 @@
 </head>
 <body>
 <h1>Find a school to apply</h1>
-<form action="/" method="POST">
+<form action="/search/schools" method="POST">
   <div class="form-group">
     <label for="school_name">School Name</label>
     <input class="form-control" id="school_name" name="school_name">
@@ -82,6 +82,7 @@
 </div>
   <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
   <div class="container">
+  <a href="/programs" class="">Looking for a program?</a>
   <h2>Result Table</h2>       
   <table class="table table-striped">
     <thead>
@@ -98,10 +99,11 @@
     <tbody>
       {%for content in contents%}
       <tr>
-        <td><a href="/{{content['school']}}">{{content['school']}}</a></td>
-        <td><a href="/{{content['rank']}}">{{content['rank']}}</a></td>
+        <td><a href="/<school>/{{content['school']}}">{{content['school']}}</a></td>
+        <td><a href="/<rank>/{{content['school']}}">{{content['rank']}}</a></td>
         <td>{{content['state']}}</td>
-        <td><a href="/{{content['city']}}">{{content['city']}}</a></td>
+        <a href="/<program>/{{content['school']}}">List of Programs</a></td>
+        <td><a href="/<city>/{{content['city']}}">{{content['city']}}</a></td>
         <td>{{content['size']}}</td>
         <td>{{content['avg_test_score']}}</td>
         <td>{{content['acc_rate']}}</td>

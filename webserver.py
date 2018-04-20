@@ -14,42 +14,47 @@ def get_tables():
 	tables = get_tables.json()
 	return tables
 
-def get_schools(school_name = "ALL"):
-	params = {'school_name': school_name}
-	get_schools = requests.get("http://localhost:5001/get_schools", params = params)
-	schools = get_schools.json()
-	return schools
+def get_table_columns(table):
+	params = {'table': table}
+	columns = requests.get("http://localhost:5001/get_table_columns", params = params)
 
-def get_schools_by_rank_state(rank1=1, rank2=5, states = ['California']):
-	params = {'rank1': rank1, 'rank2': rank2, 'states': states}
-	get_schools = requests.get("http://localhost:5001/get_schools", params = params)
-	#print(get_schools)
-	schools = get_schools.json()
-	return schools
-
-def get_programs_by_schoolname(school_name):
-	params = {'school_name': school_name}
+def get_detail_content(table, entry):
+	params = {'table': table, 'entry': entry}
 	get_programs = requests.get("http://localhost:5001/get_schools", params = params)
 	programs = get_programs.json()
 	return programs
 
-@app.route('/', methods = ['GET'])
-def get_homepage():
-	return render_template("Users.html")
+@app.route('/search/<table>', methods = ['GET'])
+def get_search(table):
+	template = 'search_'+ table + 'html'
+	return render_template(template)
 
-@app.route('/', methods = ['POST'])
-def post_homepage():
+@app.route('/search/schools', methods = ['POST'])
+def post_search():
 	name = request.form.get('school_name') #get form element according to name
-	if name: #if name is not empty
-		schools = get_schools(name)
-	else:
-		rank1 = request.form.get('ranking_range1')
-		rank2 = request.form.get('ranking_range2')
-		states = request.form.getlist('states')
+	rank1 = request.form.get('ranking_range1')
+	rank2 = request.form.get('ranking_range2')
+	states = request.form.getlist('states')
 		#print(states)
-		schools = get_schools_by_rank_state(rank1, rank2, states)
+	params = {'school_name':name, 'rank1': rank1, 'rank2': rank2, 'states': states}
+	get_schools = requests.get("http://localhost:5001/get_schools", params = params)
+	#print(get_schools)
+	schools = get_schools.json()
 	#print(schools)
 	return render_template("Users.html", contents = schools)
+
+@app.route('/search/programs', methods = ['POST'])
+def post_program_page():
+	name = request.form.get('program_name') #get form element according to name
+	rank1 = request.form.get('ranking_range1')
+	rank2 = request.form.get('ranking_range2')
+	degree = request.form.get('degree')
+	tuition1 = request.form.get('tuition_range1')
+	tuition2 = request.form.get('tuition_range2')
+	params = {'program_name':name, 'rank1': rank1, 'rank2': rank2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2}
+	get_programs = requests.get("http://localhost:5001/get_programs", params = params)
+	programs = get_programs.json()
+	return render_template("find_program.html", contents = programs)
 
 @app.route('/import', methods = ['GET'])
 def get_import():
@@ -73,7 +78,8 @@ def post_data():
 	return render_template('import.html', tables = tables, columns = columns, contents = contents)
 
 
-@app.route('/<schoolname>', methods = ['GET'])
-def program_in_school(schoolname):
-	programs = get_programs_by_schoolname(schoolname)
-	return render_template("programs.html", contents = programs)
+@app.route('/<table>/<entry>', methods = ['GET'])
+def show_details(table, entry):
+	columns = get_table_columns(table)
+	pcontents = get_detail_content(table, entry)
+	return render_template("Details.html", table = table, columns = columns, contents = contents)
