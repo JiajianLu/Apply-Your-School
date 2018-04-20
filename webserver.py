@@ -26,7 +26,7 @@ def get_detail_content(table, entry):
 
 @app.route('/search/<table>', methods = ['GET'])
 def get_search(table):
-	template = 'search_'+ table + 'html'
+	template = 'search_'+ table + '.html'
 	return render_template(template)
 
 @app.route('/search/schools', methods = ['POST'])
