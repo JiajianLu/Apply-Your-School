@@ -67,7 +67,8 @@ def get_school():
         
         for condition in not_empty_conditions:
         	if condition[1]:
-        		#if isinstance(condition[1])
+        		if isinstance(condition[1],str):
+        			condition[1] = "'"+condition[1]+"'"
         		sql += column_dict[condition[0]] + str(condition[1]) + ' '
         		if condition != not_empty_conditions[-1]:
         			sql += 'AND '
