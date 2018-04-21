@@ -14,7 +14,7 @@ Data:
 
 Front end structure:
 
-search_<table>.html: 5 web pages for querying different tables
+search_{table}.html: 5 web pages for querying different tables
 
 Show_detail.html: Clicking one of the results in the above web pages can see details of this results.
 
