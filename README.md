@@ -10,3 +10,18 @@ Create tables
 Add data
 
 Data:
+
+
+Front end structure:
+
+search_{table}.html: 6 web pages for querying different tables
+
+Detail.html: Clicking one of the results in the above web pages can see details of this results.
+
+import.html: For owner to import data.
+
+FUNCTIONS:
+
+Import csv file to the a specific table in the database
+
+Search schools based on different combinations of query conditions
