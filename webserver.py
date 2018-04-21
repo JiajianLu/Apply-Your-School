@@ -41,7 +41,7 @@ def post_search():
 	#print(get_schools)
 	schools = get_schools.json()
 	#print(schools)
-	return render_template("Users.html", contents = schools)
+	return render_template("search_schools.html", contents = schools)
 
 @app.route('/search/programs', methods = ['POST'])
 def post_program_page():
@@ -65,10 +65,9 @@ def get_import():
 def post_data():
 	uploaded_files = request.files['file[]']
 	table = request.form.get("table")
-	print(table)
-	print(uploaded_files)
 	columns = pd.read_csv(uploaded_files,nrows=1,header=None).loc[0].tolist()
-	print(columns)
+	uploaded_files.read()
+	uploaded_files.seek(0)
 	files = {'csv_file': uploaded_files}
 	print(files)
 	params = {'table': table}
