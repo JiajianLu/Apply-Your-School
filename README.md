@@ -10,3 +10,16 @@ Create tables
 Add data
 
 Data:
+
+
+Front end structure:
+
+5 web pages for querying different tables
+
+Clicking one of the results can go to this entry
+
+FUNCTIONS:
+
+Import csv file to the a specific table in the database
+
+Search schools based on different combinations of query conditions
