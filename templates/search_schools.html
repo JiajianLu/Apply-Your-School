@@ -9,6 +9,22 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+  <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Apply Your School</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/search/schools">Search schools</a></li>
+      <li><a href="/search/programs">Search programs</a></li>
+      <li><a href="/search/classes">Search classes</a></li>
+      <li><a href="/search/professors">Search professors</a></li>
+      <li><a href="/search/cities">Search cities</a></li>
+      <li><a href="/search/rankings">Search rankings</a></li>
+      <li><a href="/advance">Advanced searching</a></li>
+    </ul>
+  </div>
+</nav>
 <h1>Find a school to apply</h1>
 <form action="/search/schools" method="POST">
   <div class="form-group">
@@ -82,7 +98,6 @@
 </div>
   <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
   <div class="container">
-  <a href="/programs" class="">Looking for a program?</a>
   <h2>Result Table</h2>       
   <table class="table table-striped">
     <thead>
@@ -94,20 +109,20 @@
         <th>School Size</th>
         <th>Average Test Score</th>
         <th>Acceptance Rate</th>
+        <th>Program</th>
       </tr>
     </thead>
     <tbody>
       {%for content in contents%}
       <tr>
-        <td><a href="/<school>/{{content['school']}}">{{content['school']}}</a></td>
-        <td><a href="/<rank>/{{content['school']}}">{{content['rank']}}</a></td>
+        <td><a href="/school/{{content['school']}}">{{content['school']}}</a></td>
+        <td><a href="/rank/{{content['school']}}">{{content['rank']}}</a></td>
         <td>{{content['state']}}</td>
-        <a href="/<program>/{{content['school']}}">List of Programs</a></td>
-        <td><a href="/<city>/{{content['city']}}">{{content['city']}}</a></td>
+        <td><a href="/city/{{content['city']}}">{{content['city']}}</a></td>
         <td>{{content['size']}}</td>
         <td>{{content['avg_test_score']}}</td>
         <td>{{content['acc_rate']}}</td>
-
+        <td><a href="/program/{{content['school']}}">List of Programs</a></td>
       </tr>
       {% endfor %}
     </tbody>

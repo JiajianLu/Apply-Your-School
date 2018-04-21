@@ -20,14 +20,18 @@ def get_table_columns(table):
 
 def get_detail_content(table, entry):
 	params = {'table': table, 'entry': entry}
-	get_programs = requests.get("http://localhost:5001/get_schools", params = params)
-	programs = get_programs.json()
-	return programs
+	get_contents = requests.get("http://localhost:5001/get_"+table, params = params)
+	contents = get_contents.json()
+	return contents
 
 @app.route('/search/<table>', methods = ['GET'])
 def get_search(table):
 	template = 'search_'+ table + '.html'
 	return render_template(template)
+
+@app.route('/index', methods = ['GET'])
+def get_index():
+	return render_template('Homepage.html')
 
 @app.route('/search/schools', methods = ['POST'])
 def post_search():
@@ -77,8 +81,7 @@ def post_data():
 	return render_template('import.html', tables = tables, columns = columns, contents = contents)
 
 
-@app.route('/<table>/<entry>', methods = ['GET'])
-def show_details(table, entry):
-	columns = get_table_columns(table)
-	pcontents = get_detail_content(table, entry)
+@app.route('/<program>/<school>', methods = ['GET'])
+def show_program_details(school):
+	contents = get_detail_content(program, school)
 	return render_template("Details.html", table = table, columns = columns, contents = contents)
