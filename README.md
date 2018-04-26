@@ -24,4 +24,10 @@ FUNCTIONS:
 
 Import csv file to the a specific table in the database
 
-Search schools based on different combinations of query conditions
+Search schools, programs, cities, rankings, professors based on different combinations of query conditions
+
+TODO:
+
+Advanced searching:
+
+A webpage contains inputs for all columns in the database.
