@@ -83,8 +83,8 @@ def post_cities_page():
 	house1 = request.form.get('house_range1')
 	house2 = request.form.get('house_range2')
 	params = {'city_name': city_name, 'states': states, 'pop2': pop2, 'pop1': pop1,'tem2':tem2, 'tem1': tem1, 'crime2': crime2, 'crime1': crime1, 'house2': house2, 'house1': house1}
-	get_programs = requests.get("http://localhost:5001/get_cities", params = params)
-	programs = get_programs.json()
+	get_cities = requests.get("http://localhost:5001/get_cities", params = params)
+	cities = get_cities.json()
 	return render_template("search_cities.html", contents = cities)
 
 @app.route('/import', methods = ['GET'])

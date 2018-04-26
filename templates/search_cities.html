@@ -26,7 +26,7 @@
   </div>
 </nav>
 <h1>Find the city for your school</h1>
-<form action="/search/city" method="POST">
+<form action="/search/cities" method="POST">
   <div class="form-group">
     <label for="city_name">City Name</label>
     <input class="form-control" id="city_name" name="city_name">
@@ -98,7 +98,7 @@
 </div>
 
 <div class="form-group">
-<label for="tem_range">Temperature Range</label>
+<label for="tem_range">Temperature Range (°F)</label>
   <div class="input-group">
     <input type="text" class="form-control" id="tem_range1" name="tem_range1" placeholder="Start"/>
     <span class="input-group-addon">-</span>
@@ -127,27 +127,31 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>School Name</th>
-        <th>Ranking</th>
+        <th>City Name</th>
         <th>State</th>
-        <th>City</th>
-        <th>School Size</th>
-        <th>Average Test Score</th>
-        <th>Acceptance Rate</th>
+        <th>Population</th>
+        <th>Average Temperature (°F)</th>
+        <th>Precipitation (Inches)</th>
+        <th>Violent Crime per 100000 people</th>
+        <th>Property Crime per 100000 people</th>
+        <th>Total Crime per 100000 people</th>
+        <th>Fatality per 100000 people</th>
+        <th>Monthly Housing Costs ($)</th>
       </tr>
     </thead>
     <tbody>
       {%for content in contents%}
       <tr>
-        <td><a href="/<school>/{{content['school']}}">{{content['school']}}</a></td>
-        <td><a href="/<rank>/{{content['school']}}">{{content['rank']}}</a></td>
-        <td>{{content['state']}}</td>
-        <a href="/<program>/{{content['school']}}">List of Programs</a></td>
-        <td><a href="/<city>/{{content['city']}}">{{content['city']}}</a></td>
-        <td>{{content['size']}}</td>
-        <td>{{content['avg_test_score']}}</td>
-        <td>{{content['acc_rate']}}</td>
-
+        <td>{{content['CITY_NAME']}}</td>
+        <td>{{content['STATE_NAME']}}</td>
+        <td>{{content['POPULATION']}}</td>
+        <td>{{content['AVERAGE_TEMP_(°F)']}}</td>
+        <td>{{content['PRECIPITATION_(INCHES)']}}</td>
+        <td>{{content['VIOLENT_CRIME_(PER_100,000_PEOPLE)']}}</td>
+        <td>{{content['PROPERTY_CRIME_(PER_100,000_PEOPLE)']}}</td>
+        <td>{{content['TOTAL_CRIME_(PER_100,000_PEOPLE)']}}</td>
+        <td>{{content['FATALITY_(PER_100,000_PEOPLE)']}}</td>
+        <td>{{content['MONTHLY_HOUSING_COSTS($)']}}</td>
       </tr>
       {% endfor %}
     </tbody>
