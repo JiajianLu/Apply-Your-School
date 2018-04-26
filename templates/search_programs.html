@@ -12,7 +12,7 @@
     <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Apply Your School</a>
+      <a class="navbar-brand" href="/index">Apply Your School</a>
     </div>
     <ul class="nav navbar-nav">
       <li><a href="/search/schools">Search schools</a></li>
@@ -21,39 +21,42 @@
       <li><a href="/search/professors">Search professors</a></li>
       <li><a href="/search/cities">Search cities</a></li>
       <li><a href="/search/rankings">Search rankings</a></li>
+      <li><a href="/advanced">Advanced searching</a></li>
     </ul>
   </div>
 </nav>
 <h1>Find a program to apply</h1>
 <form action="/search/programs" method="POST">
   <div class="form-group">
-    <label for="program_name">Program Name</label>
-    <input class="form-control" id="program_name" name="program_name">
+    <label for="department">Department</label>
+    <input class="form-control" id="department" name="department">
   </div>
-  <label for="ranking_range">Ranking Range</label>
-    <div class="row">
-      <div class="col-lg-6">
-        <input class="form-control" id="ranking_range1" name="ranking_range1">
-      </div>To
-      <div class="col-lg-6">
-        <input class="form-control" id="ranking_range2" name="ranking_range2">
-      </div>
-    </div>
+  <div class="form-group">
+  <label for="school_name">School Name</label>
+        <input class="form-control" id="school_name" name="school_name">
+  </div>
 <div class="form-group">
   <label for="degree">Select Degree:</label>
  <select class="form-control" id="degree" name="degree">
   <option value="undergrad">Undergrad</option>
   <option value="grad">Grad</option>
 </select>
+</div>
+<div class="form-group">
 <label for="tuition_range">Tuition Range</label>
-    <div class="row">
-      <div class="col-lg-6">
-        <input class="form-control" id="tuition_range1" name="tuition_range1">
-      </div>To
-      <div class="col-lg-6">
-        <input class="form-control" id="tuition_range2" name="tuition_range2">
-      </div>
-    </div>
+  <div class="input-group">
+    <input type="text" class="form-control" id="tuition_range1" name="tuition_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="tuition_range2" name="tuition_range2" placeholder="End"/>
+</div>
+</div>
+<div class="form-group">
+<label for="salary_range">Average Starting Salary</label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="salary_range1" name="salary_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="salary_range2" name="salary_range2" placeholder="End"/>
+</div>
 </div>
   <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
   <div class="container">
@@ -61,26 +64,23 @@
   <table class="table table-striped">
     <thead>
       <tr>
+        <th>Department</th>
         <th>School Name</th>
-        <th>Ranking</th>
-        <th>State</th>
-        <th>City</th>
-        <th>School Size</th>
-        <th>Average Test Score</th>
-        <th>Acceptance Rate</th>
+        <th>Degree</th>
+        <th>Tuition</th>
+        <th>Average Length (YEAR)</th>
+        <th>Average Starting Salary</th>
       </tr>
     </thead>
     <tbody>
       {%for content in contents%}
       <tr>
-        <td><a href="/{{content['school']}}">{{content['school']}}</a></td>
-        <td><a href="/{{content['rank']}}">{{content['rank']}}</a></td>
-        <td>{{content['state']}}</td>
-        <td><a href="/{{content['city']}}">{{content['city']}}</a></td>
-        <td>{{content['size']}}</td>
-        <td>{{content['avg_test_score']}}</td>
-        <td>{{content['acc_rate']}}</td>
-
+        <td>{{content['DEPARTMENT']}}</td>
+        <td>{{content['SCHOOL_NAME']}}</td>
+        <td>{{content['DEGREE']}}</td>
+        <td>{{content['TUITION_($)']}}</td>
+        <td>{{content['AVERAGE_LENGTH_(YEAR)']}}</td>
+        <td>{{content['AVERAGE_STARTING_SALARY_($)']}}</td>
       </tr>
       {% endfor %}
     </tbody>

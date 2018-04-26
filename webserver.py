@@ -49,16 +49,43 @@ def post_search():
 
 @app.route('/search/programs', methods = ['POST'])
 def post_program_page():
-	name = request.form.get('program_name') #get form element according to name
-	rank1 = request.form.get('ranking_range1')
-	rank2 = request.form.get('ranking_range2')
+	department_name = request.form.get('department') #get form element according to name
+	school_name = request.form.get('school_name') #get form element according to name
 	degree = request.form.get('degree')
 	tuition1 = request.form.get('tuition_range1')
 	tuition2 = request.form.get('tuition_range2')
-	params = {'program_name':name, 'rank1': rank1, 'rank2': rank2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2}
+	salary1 = request.form.get('salary_range1')
+	salary2 = request.form.get('salary_range2')
+	params = {'school_name': school_name, 'length': length, 'salary1': salary1, 'salary2': salary2,'department_name':department_name, 'rank1': rank1, 'rank2': rank2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2}
 	get_programs = requests.get("http://localhost:5001/get_programs", params = params)
 	programs = get_programs.json()
-	return render_template("find_program.html", contents = programs)
+	return render_template("search_programs.html", contents = programs)
+
+@app.route('/search/rankings', methods = ['POST'])
+def post_ranking_page():
+	school_name = request.form.get('school_name')
+	source = request.form.getlist('source')
+	params = {'source': source, 'school_name': school_name}
+	get_rankings = requests.get("http://localhost:5001/get_rankings", params = params)
+	rankings = get_rankings.json()
+	return render_template("search_rankings.html", contents = rankings)
+
+@app.route('/search/cities', methods = ['POST'])
+def post_cities_page():
+	city_name = request.form.get('city_name') #get form element according to name
+	states = request.form.getlist('states') #get form element according to name
+	pop1 = request.form.get('pop_range1')
+	pop2 = request.form.get('pop_range2')
+	tem1 = request.form.get('tem_range1')
+	tem2 = request.form.get('tem_range2')
+	crime1 = request.form.get('crime_range1')
+	crime2 = request.form.get('crime_range2')
+	house1 = request.form.get('house_range1')
+	house2 = request.form.get('house_range2')
+	params = {'city_name': city_name, 'states': states, 'pop2': pop2, 'pop1': pop1,'tem2':tem2, 'tem1': tem1, 'crime2': crime2, 'crime1': crime1, 'house2': house2, 'house1': house1}
+	get_programs = requests.get("http://localhost:5001/get_cities", params = params)
+	programs = get_programs.json()
+	return render_template("search_cities.html", contents = cities)
 
 @app.route('/import', methods = ['GET'])
 def get_import():

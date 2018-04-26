@@ -21,25 +21,17 @@
       <li><a href="/search/professors">Search professors</a></li>
       <li><a href="/search/cities">Search cities</a></li>
       <li><a href="/search/rankings">Search rankings</a></li>
+      <li><a href="/advanced">Advanced searching</a></li>
     </ul>
   </div>
 </nav>
-<h1>Find a school to apply</h1>
+<h1>Find the city for your school</h1>
 <form action="/search/city" method="POST">
   <div class="form-group">
     <label for="city_name">City Name</label>
     <input class="form-control" id="city_name" name="city_name">
   </div>
-  <label for="ranking_range">Ranking Range</label>
-    <div class="row">
-      <div class="col-lg-6">
-        <input class="form-control" id="ranking_range1" name="ranking_range1">
-      </div>To
-      <div class="col-lg-6">
-        <input class="form-control" id="ranking_range2" name="ranking_range2">
-      </div>
-    </div>
-<div class="form-group">
+  <div class="form-group">
   <label for="sel1">Select States:</label>
  <select multiple class="form-control" id="sel1" name="states">
   <option value="AL">Alabama</option>
@@ -94,6 +86,40 @@
   <option value="WI">Wisconsin</option>
   <option value="WY">Wyoming</option>
 </select>       
+</div>
+
+  <div class="form-group">
+<label for="population_range">Population Range</label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="pop_range1" name="pop_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="pop_range2" name="pop_range2" placeholder="End"/>
+</div>
+</div>
+
+<div class="form-group">
+<label for="tem_range">Temperature Range</label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="tem_range1" name="tem_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="tem_range2" name="tem_range2" placeholder="End"/>
+</div>
+</div>
+<div class="form-group">
+<label for="crime_range">Violence Crime Range (Per 100,000 people)</label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="crime_range1" name="crime_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="crime_range2" name="crime_range2" placeholder="End"/>
+</div>
+</div>
+<div class="form-group">
+<label for="house_range">Monthly Housing Cost Range ($)</label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="house_range1" name="house_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="house_range2" name="house_range2" placeholder="End"/>
+</div>
 </div>
   <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
   <div class="container">
