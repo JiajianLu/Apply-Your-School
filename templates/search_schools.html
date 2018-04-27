@@ -32,13 +32,6 @@
     <input class="form-control" id="school_name" name="school_name">
   </div>
 
-    <label for="ranking_range">Ranking Range</label>
-    <div class="input-group">
-    <input type="text" class="form-control" id="ranking_range1" name="ranking_range1" placeholder="Start"/>
-    <span class="input-group-addon">-</span>
-    <input type="text" class="form-control" id="ranking_range2" name="ranking_range2" placeholder="End"/>
-    </div>
-
     <label for="tuition_range">Yearly Tuition Range</label>
     <div class="input-group">
     <input type="text" class="form-control" id="tuition_range1" name="tuition_range1" placeholder="Start"/>
@@ -146,22 +139,35 @@
         <th>School Name</th>
         <th>State</th>
         <th>City</th>
-        {% for column in columns %}
-        <th>{{column}}</th>
-        {% endfor %}
+        <th>Tuition</th>
+        <th>School Size</th>
+        <th>Campus Size</th>
+        <th>Average SAT</th>
+        <th>Average ACT</th>
+        <th>Acceptance Rate</th>
+        <th>Programs</th>
+        <th>Application Fee</th>
+        <th>Early Action Deadline</th>
+        <th>Regular Deadline</th>
       </tr>
     </thead>
     <tbody>
       {%for content in contents%}
       <tr>
-        <td><a href="/school/{{content['school']}}">{{content['school']}}</a></td>
-        <td><a href="/rank/{{content['school']}}">{{content['rank']}}</a></td>
-        <td>{{content['state']}}</td>
-        <td><a href="/city/{{content['city']}}">{{content['city']}}</a></td>
-        <td>{{content['size']}}</td>
-        <td>{{content['avg_test_score']}}</td>
-        <td>{{content['acc_rate']}}</td>
+
+        <td>{{content['SCHOOL_NAME']}}</td>
+        <td>{{content['STATE']}}</td>
+        <td>{{content['CITY']}}</td>
+        <td>{{content['TUITION_($)']}}</td>
+        <td>{{content['SIZE']}}</td>
+        <td>{{content['AREA_SIZE_(ACRE)']}}</td>
+        <td>{{content['50TH_PERCENTILE_SAT']}}</td>
+        <td>{{content['50TH_PERCENTILE_ACT']}}</td>
+        <td>{{content['ACCEPTANCE_RATE']}}</td>      
         <td><a href="/program/{{content['school']}}">List of Programs</a></td>
+        <td>{{content['APPLICATION_FEE_($)']}}</td> 
+        <td>{{content['EARLY_ACTION_DEADLINE']}}</td> 
+        <td>{{content['REGULAR_DEADLINE']}}</td> 
       </tr>
       {% endfor %}
     </tbody>
