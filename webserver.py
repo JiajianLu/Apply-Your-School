@@ -100,12 +100,12 @@ def post_cities_page():
 	return render_template("search_cities.html", contents = cities)
 
 @app.route('/search/professors', methods = ['POST'])
-def post_program_page():
+def post_professors_page():
 
 	school_name = request.form.get('school_name') #get form element according to name
 	specialty = request.form.get('specialty')
-	department = request.form.get('department_name')
-	params = {'school_name': school_name, 'specialty': specialty, 'department': department}
+	department_name = request.form.get('department_name')
+	params = {'school_name': school_name, 'specialty': specialty, 'department_name': department_name}
 	get_professors = requests.get("http://localhost:5001/get_professors", params = params)
 	professors = get_professors.json()
 	return render_template("search_professors.html", contents = professors)
