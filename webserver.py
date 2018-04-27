@@ -53,7 +53,7 @@ def post_search():
 	states = request.form.getlist('states')
 	params = {'school_name':name, 'rank1': rank1, 'rank2': rank2, 'states': states, 'tuition1': tuition1, 
 	'tuition2': tuition2, 'ar1':ar1, 'ar2':ar2, 'size1':size1, 'size2': size2, 'campus1':campus1, 'campus2': campus2,
-	'sat1': sat1, 'sat2':sat2, 'act1':act1, 'act2', act2
+	'sat1': sat1, 'sat2':sat2, 'act1':act1, 'act2': act2
 	}
 	get_schools = requests.get("http://localhost:5001/get_schools", params = params)
 	schools = get_schools.json()

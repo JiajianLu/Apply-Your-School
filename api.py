@@ -87,7 +87,7 @@ def get_school():
         else:
         	states_list = tuple(states_list)
         states = ['states', states_list]
-        conditions = [school_name, rank1, rank2, states]
+        conditions = [school_name, rank1, rank2, states, tuition1, tuition2, ar1, ar2, size1, size2, campus1, campus2, sat1, sat2,act1,act2]
         not_empty_conditions = []
         for condition in conditions:
         	if condition[1]:
