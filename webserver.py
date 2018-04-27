@@ -100,8 +100,7 @@ def post_cities_page():
 	return render_template("search_cities.html", contents = cities)
 
 @app.route('/search/professors', methods = ['POST'])
-def post_program_page():
-
+def post_professor_page():
 	school_name = request.form.get('school_name') #get form element according to name
 	specialty = request.form.get('specialty')
 	department = request.form.get('department_name')

@@ -25,12 +25,18 @@ connection = pymysql.connect(host='localhost',
 
 def create_links_table():
     with connection.cursor() as cursor:
+        #cursor.execute("DROP TABLE IF EXISTS `ADMISSION_STATS`")
+        #cursor.execute("DROP TABLE IF EXISTS `CITY_STATS`")
+        # cursor.execute("DROP TABLE IF EXISTS `PROFESSOR_STATS`")
+        # cursor.execute("DROP TABLE IF EXISTS `PROGRAM_STATS`")
+        # cursor.execute("DROP TABLE IF EXISTS `RANKING`")
+        # cursor.execute("DROP TABLE IF EXISTS `SCHOOL_STATS`")
         cursor.execute("CREATE TABLE IF NOT EXISTS `ADMISSION_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`YEAR` int(11) DEFAULT NULL,`ACCEPTANCE_RATE` float DEFAULT NULL,`25TH_PERCENTILE_SAT` float DEFAULT NULL,`50TH_PERCENTILE_SAT` float DEFAULT NULL,`75TH_PERCENTILE_SAT` float DEFAULT NULL,`25TH_PERCENTILE_ACT` float DEFAULT NULL,`50TH_PERCENTILE_ACT` float DEFAULT NULL,`75TH_PERCENTILE_ACT` float DEFAULT NULL,`SIZE` float DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `CITY_STATS` (`CITY_NAME` varchar(50) NOT NULL,`STATE_NAME` varchar(10) DEFAULT NULL,`POPULATION` int(11) DEFAULT NULL,`AVERAGE_TEMP_(°F)` float DEFAULT NULL,`PRECIPITATION (INCHES)` float DEFAULT NULL,`VIOLENT_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`PROPERTY_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`TOTAL_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`FATALITY_(PER_100,000_PEOPLE)` float DEFAULT NULL,`MONTHLY_HOUSING_COSTS($)` float DEFAULT NULL,PRIMARY KEY (`CITY_NAME`))")
-        cursor.execute("CREATE TABLE IF NOT EXISTS `PROFESSOR_STATS` (`PROFESSOR_NAME` varchar(50) NOT NULL,`SCHOOL_NAME` varchar(50) DEFAULT NULL,`DEPARTMENT` varchar(50) DEFAULT NULL,`SPECIALTY` varchar(50) DEFAULT NULL,`RATINGS` float DEFAULT NULL,`TITLE` varchar(50) DEFAULT NULL,PRIMARY KEY (`PROFESSOR_NAME`))")
+        cursor.execute("CREATE TABLE IF NOT EXISTS `PROFESSOR_STATS` (`PROFESSOR_NAME` varchar(50) NOT NULL,`SCHOOL_NAME` varchar(50) DEFAULT NULL,`DEPARTMENT` varchar(50) DEFAULT NULL,`SPECIALTY` varchar(100) DEFAULT NULL,`RATINGS` float DEFAULT NULL,`TITLE` varchar(50) DEFAULT NULL,PRIMARY KEY (`PROFESSOR_NAME`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `PROGRAM_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`DEPARTMENT` varchar(50) NOT NULL,`DEGREE` varchar(10) NOT NULL,`TUITION_($)` int(11) DEFAULT NULL,`AVERAGE_LENGTH_(YEAR)` int(11) DEFAULT NULL,`AVERAGE_STARTING_SALARY ($)` int(11) DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`,`DEPARTMENT`,`DEGREE`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `RANKING` (`SOURCE` varchar(50) NOT NULL,`SCHOOL_NAME` varchar(50) NOT NULL,`WORLD_RANKING` int(11) DEFAULT NULL,`YEAR` int(11) DEFAULT NULL,PRIMARY KEY (`SOURCE`,`SCHOOL_NAME`))")
-        cursor.execute("CREATE TABLE IF NOT EXISTS `SCHOOL_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`AREA_SIZE_(ACRE)` float DEFAULT NULL,`CITY` varchar(50) DEFAULT NULL,`APPLICATION_FEE_($)` int(11) DEFAULT NULL,`EARLY_ACTION_DEADLINE` datetime DEFAULT NULL,`REGULAR_DEADLINE` datetime DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`))")
+        cursor.execute("CREATE TABLE IF NOT EXISTS `SCHOOL_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`AREA_SIZE_(ACRE)` float DEFAULT NULL,`CITY` varchar(50) DEFAULT NULL,`APPLICATION_FEE_($)` int(11) DEFAULT NULL,`EARLY_ACTION_DEADLINE` date DEFAULT NULL, `STATE` varchar(10) DEFAULT NULL,`REGULAR_DEADLINE` date DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`))")
     connection.commit()
 
 
@@ -287,13 +293,15 @@ def file_upload():
         for i in range(len(uploaded_files)):
             row_values = uploaded_files.loc[i].tolist()
             for row_value in row_values:#add values in each row
-                if isinstance(row_value, np.int64):
-                    value+= (int(row_value),)
-                elif isinstance(row_value, np.float64):
-                    value+= (float(row_value),)
+                if str(row_value) != 'nan':
+                    if isinstance(row_value, np.int64):
+                        value+= (int(row_value),)
+                    elif isinstance(row_value, np.float64):
+                        value+= (float(row_value),)
+                    else:
+                        value+= (row_value,)
                 else:
-                    value+= (row_value,)
-        print(sql)
+                    value+= (None,)
         cursor.execute(sql, value)
     connection.commit()
     return "%s rows of Data were imported!" % (i+1)
