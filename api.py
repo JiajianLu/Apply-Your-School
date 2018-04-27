@@ -69,6 +69,18 @@ def get_school():
         school_name = ['school_name', request.args.get('school_name')]
         rank1 = ['rank1', request.args.get('rank1')]
         rank2 = ['rank2', request.args.get('rank2')]
+        tuition1 = ['tuition1', request.args.get('tuition1')]
+        tuition2 = ['tuition2', request.args.get('tuition2')]
+        ar1 = ['ar1', request.args.get('ar1')]
+        ar2 = ['ar2', request.args.get('ar2')]
+        size1 = ['size1', request.args.get('size1')]
+        size2 = ['size2', request.args.get('size2')]
+        campus1 = ['campus1', request.args.get('campus1')]
+        campus2 = ['campus2', request.args.get('campus2')]
+        sat1 = ['sat1', request.args.get('sat1')]
+        sat2 = ['sat2', request.args.get('sat2')]
+        act1 = ['act1', request.args.get('sat2')]
+        act2 = ['act2', request.args.get('act2')]
         states_list = request.args.getlist('states')
         if len(states_list)==1:
         	states_list = "('" + str(states_list[0])+"')"
@@ -80,7 +92,7 @@ def get_school():
         for condition in conditions:
         	if condition[1]:
         		not_empty_conditions.append(condition)
-        sql = "SELECT * FROM new_schools WHERE "
+        sql = "SELECT * FROM SCHOOL_STATS INNER JOIN ADMISSION_STATS ON SCHOOL_STATS.SCHOOL_NAME = ADMISSION_STATS.SCHOOL_NAME WHERE "
         
         for condition in not_empty_conditions:
         	if condition[1]:

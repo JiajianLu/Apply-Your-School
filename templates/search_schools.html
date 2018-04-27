@@ -31,15 +31,56 @@
     <label for="school_name">School Name</label>
     <input class="form-control" id="school_name" name="school_name">
   </div>
-  <label for="ranking_range">Ranking Range</label>
-    <div class="row">
-      <div class="col-lg-6">
-        <input class="form-control" id="ranking_range1" name="ranking_range1">
-      </div>To
-      <div class="col-lg-6">
-        <input class="form-control" id="ranking_range2" name="ranking_range2">
-      </div>
+
+    <label for="ranking_range">Ranking Range</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="ranking_range1" name="ranking_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="ranking_range2" name="ranking_range2" placeholder="End"/>
     </div>
+
+    <label for="tuition_range">Yearly Tuition Range</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="tuition_range1" name="tuition_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="tuition_range2" name="tuition_range2" placeholder="End"/>
+    </div>
+
+    <label for="ar_range">Acceptance Rate</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="ar_range1" name="ar_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="ar_range2" name="ar_range2" placeholder="End"/>
+    </div>
+
+    <label for="school_range">School Size</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="size_range1" name="size_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="size_range2" name="size_range2" placeholder="End"/>
+    </div>
+
+    <label for="campus_range">Campus Size (Acres)</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="campus_range1" name="campus_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="campus_range2" name="campus_range2" placeholder="End"/>
+    </div>
+
+    <label for="sat_range">Average SAT</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="sat_range1" name="sat_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="sat_range2" name="sat_range2" placeholder="End"/>
+    </div>
+    <label for="act_range">Average ACT</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="act_range1" name="act_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="act_range2" name="act_range2" placeholder="End"/>
+    </div>
+
+
 <div class="form-group">
   <label for="sel1">Select States:</label>
  <select multiple class="form-control" id="sel1" name="states">
@@ -101,7 +142,14 @@
   <h2>Result Table</h2>       
   <table class="table table-striped">
     <thead>
-     
+      <tr>
+        <th>School Name</th>
+        <th>State</th>
+        <th>City</th>
+        {% for column in columns %}
+        <th>{{column}}</th>
+        {% endfor %}
+      </tr>
     </thead>
     <tbody>
       {%for content in contents%}

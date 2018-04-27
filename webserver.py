@@ -38,13 +38,25 @@ def post_search():
 	name = request.form.get('school_name') #get form element according to name
 	rank1 = request.form.get('ranking_range1')
 	rank2 = request.form.get('ranking_range2')
+	tuition1 = request.form.get('tuition_range1')
+	tuition2 = request.form.get('tuition_range2')
+	ar1 = request.form.get('ar_range1') 
+	ar2 = request.form.get('ar_range2') 
+	size1 = request.form.get('size_range1')
+	size2 = request.form.get('size_range2')
+	campus1 = request.form.get('campus_range1')
+	campus2 = request.form.get('campus_range2')
+	sat1 = request.form.get('sat_range1')
+	sat2 = request.form.get('sat_range2')
+	act1 = request.form.get('act_range1')
+	act2 = request.form.get('act_range2')
 	states = request.form.getlist('states')
-		#print(states)
-	params = {'school_name':name, 'rank1': rank1, 'rank2': rank2, 'states': states}
+	params = {'school_name':name, 'rank1': rank1, 'rank2': rank2, 'states': states, 'tuition1': tuition1, 
+	'tuition2': tuition2, 'ar1':ar1, 'ar2':ar2, 'size1':size1, 'size2': size2, 'campus1':campus1, 'campus2': campus2,
+	'sat1': sat1, 'sat2':sat2, 'act1':act1, 'act2', act2
+	}
 	get_schools = requests.get("http://localhost:5001/get_schools", params = params)
-	#print(get_schools)
 	schools = get_schools.json()
-	#print(schools)
 	return render_template("search_schools.html", contents = schools)
 
 @app.route('/search/programs', methods = ['POST'])
