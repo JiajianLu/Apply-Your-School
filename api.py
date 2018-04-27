@@ -13,7 +13,11 @@ column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'rank>=', 'rank2': 'rank<
                  'sources': 'SOURCE IN ',
                  'city_name': 'CITY_NAME=', 'pop1': 'POPULATION >=', 'pop2': 'POPULATION <=', 'tem1': '`AVERAGE_TEMP_(°F)` >=', 'tem2': '`AVERAGE_TEMP_(°F)` <=',
                  'crime1': 'VIOLENT_CRIME_(PER_100,000_PEOPLE) <=', 'crime2': 'VIOLENT_CRIME_(PER_100,000_PEOPLE) >=',
-                 'house2': 'MONTHLY_HOUSING_COSTS_($) <=', 'house1': 'MONTHLY_HOUSING_COSTS_($) >='}
+                 'house2': 'MONTHLY_HOUSING_COSTS_($) <=', 'house1': 'MONTHLY_HOUSING_COSTS_($) >=',
+                 'specialty': 'SPECIALTY', 'size1': 'SIZE >=', 'size2': 'SIZE <=', 'ar1': 'ACCEPTANCE_RATE >=',
+                 'ar2': 'ACCEPTANCE_RATE <=', 'campus1': 'AREA_SIZE_(ACRE) >=', 'campus2' :'AREA_SIZE_(ACRE) <=', 
+                 'sat1':'50TH_PERCENTILE_SAT >=', 'sat2': '50TH_PERCENTILE_SAT <=', 'act1':'50TH_PERCENTILE_ACT >=', 'act2': '50TH_PERCENTILE_ACT <='
+                 }
 
 # Connect to the database
 connection = pymysql.connect(host='localhost',
@@ -237,7 +241,7 @@ def get_cities():
 def get_professors():
     with connection.cursor() as cursor:
         school_name = ['school_name', request.args.get('school_name')]
-        department = ['department', request.args.get('department')]
+        department_name = ['department_name', request.args.get('department_name')]
         specialty = ['specialty', request.args.get('specialty')]
         source = request.args.getlist('source')
         #if condtion is not empty, then append sql

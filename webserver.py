@@ -68,7 +68,7 @@ def post_program_page():
 	tuition2 = request.form.get('tuition_range2')
 	salary1 = request.form.get('salary_range1')
 	salary2 = request.form.get('salary_range2')
-	params = {'school_name': school_name, 'length': length, 'salary1': salary1, 'salary2': salary2,'department_name':department_name, 'rank1': rank1, 'rank2': rank2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2}
+	params = {'school_name': school_name,'salary1': salary1, 'salary2': salary2,'department_name':department_name, 'rank1': rank1, 'rank2': rank2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2}
 	get_programs = requests.get("http://localhost:5001/get_programs", params = params)
 	programs = get_programs.json()
 	return render_template("search_programs.html", contents = programs)
@@ -100,11 +100,16 @@ def post_cities_page():
 	return render_template("search_cities.html", contents = cities)
 
 @app.route('/search/professors', methods = ['POST'])
+<<<<<<< HEAD
 def post_professor_page():
+=======
+def post_professors_page():
+
+>>>>>>> cd3fcbf42fa31717aade36e43dc27a7492311585
 	school_name = request.form.get('school_name') #get form element according to name
 	specialty = request.form.get('specialty')
-	department = request.form.get('department_name')
-	params = {'school_name': school_name, 'specialty': specialty, 'department': department}
+	department_name = request.form.get('department_name')
+	params = {'school_name': school_name, 'specialty': specialty, 'department_name': department_name}
 	get_professors = requests.get("http://localhost:5001/get_professors", params = params)
 	professors = get_professors.json()
 	return render_template("search_professors.html", contents = professors)
