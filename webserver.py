@@ -68,7 +68,7 @@ def post_program_page():
 	tuition2 = request.form.get('tuition_range2')
 	salary1 = request.form.get('salary_range1')
 	salary2 = request.form.get('salary_range2')
-	params = {'school_name': school_name, 'length': length, 'salary1': salary1, 'salary2': salary2,'department_name':department_name, 'rank1': rank1, 'rank2': rank2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2}
+	params = {'school_name': school_name,'salary1': salary1, 'salary2': salary2,'department_name':department_name, 'rank1': rank1, 'rank2': rank2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2}
 	get_programs = requests.get("http://localhost:5001/get_programs", params = params)
 	programs = get_programs.json()
 	return render_template("search_programs.html", contents = programs)
