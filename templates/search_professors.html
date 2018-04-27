@@ -25,20 +25,19 @@
   </div>
 </nav>
 <h1>Find a school to apply</h1>
-<form action="/search/city" method="POST">
+<form action="/search/professors" method="POST">
   <div class="form-group">
-    <label for="city_name">City Name</label>
-    <input class="form-control" id="city_name" name="city_name">
+    <label for="school_name">School Name</label>
+    <input class="form-control" id="school_name" name="school_name">
   </div>
-  <label for="ranking_range">Ranking Range</label>
-    <div class="row">
-      <div class="col-lg-6">
-        <input class="form-control" id="ranking_range1" name="ranking_range1">
-      </div>To
-      <div class="col-lg-6">
-        <input class="form-control" id="ranking_range2" name="ranking_range2">
-      </div>
-    </div>
+    <div class="form-group">
+    <label for="department_name">Department Name</label>
+    <input class="form-control" id="department_name" name="department_name">
+  </div>
+  <div class="form-group">
+  <label for="specialty">Specialty</label>
+  <input class="form-control" id="specialty" name="specialty">
+</div>
 <div class="form-group">
   <label for="sel1">Select States:</label>
  <select multiple class="form-control" id="sel1" name="states">
@@ -101,27 +100,20 @@
   <table class="table table-striped">
     <thead>
       <tr>
+        <th>Professor Name</th>
         <th>School Name</th>
-        <th>Ranking</th>
-        <th>State</th>
-        <th>City</th>
-        <th>School Size</th>
-        <th>Average Test Score</th>
-        <th>Acceptance Rate</th>
+        <th>Department</th>
+        <th>Specialty</th>
+        <th>Title</th>
       </tr>
     </thead>
     <tbody>
       {%for content in contents%}
       <tr>
-        <td><a href="/<school>/{{content['school']}}">{{content['school']}}</a></td>
-        <td><a href="/<rank>/{{content['school']}}">{{content['rank']}}</a></td>
-        <td>{{content['state']}}</td>
-        <a href="/<program>/{{content['school']}}">List of Programs</a></td>
-        <td><a href="/<city>/{{content['city']}}">{{content['city']}}</a></td>
-        <td>{{content['size']}}</td>
-        <td>{{content['avg_test_score']}}</td>
-        <td>{{content['acc_rate']}}</td>
-
+       <td>{{content['PROFESSOR_NAME']}}</td>
+       <td>{{content['SCHOOL_NAME']}}</td>
+       <td>{{content['DEPARTMENT_NAME']}}</td>
+       <td>{{content['TITLE']}}</td>
       </tr>
       {% endfor %}
     </tbody>
