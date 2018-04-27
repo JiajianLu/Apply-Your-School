@@ -224,8 +224,44 @@ def get_cities():
         for i in range(len(results)):
             city = results[i]
             cities.append(city)
-        #print(schools)
+
         return json.dumps(cities)
+
+@app.route('/get_rankings', methods = ['GET'])
+def get_professors():
+    with connection.cursor() as cursor:
+        school_name = ['school_name', request.args.get('school_name')]
+        department = ['department', request.args.get('department')]
+        specialty = ['specialty', request.args.get('specialty')]
+        source = request.args.getlist('source')
+        #if condtion is not empty, then append sql
+        if len(source)==1:
+            source = "('" + str(source[0])+"')"
+        else:
+            source = tuple(source)
+        conditions = [school_name, department, specialty]
+        not_empty_conditions = []
+        for condition in conditions:
+            if condition[1]:
+                not_empty_conditions.append(condition)
+        sql = "SELECT * FROM PROFESSOR_STATS WHERE "
+        
+        for condition in not_empty_conditions:
+            if condition[1]:
+                if isinstance(condition[1],str) and condition[1][0] != '(':
+                    condition[1] = "'"+condition[1]+"'"
+                sql += column_dict[condition[0]] + str(condition[1]) + ' '
+                if condition != not_empty_conditions[-1]:
+                    sql += 'AND '
+        print(sql)
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        professors = list()
+        for i in range(len(results)):
+            professor = results[i]
+            professors.append(professor)
+        return json.dumps(professors)
+
 
 @app.route('/import', methods = ['POST'])
 def file_upload():

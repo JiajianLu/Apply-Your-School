@@ -99,6 +99,17 @@ def post_cities_page():
 	cities = get_cities.json()
 	return render_template("search_cities.html", contents = cities)
 
+@app.route('/search/professors', methods = ['POST'])
+def post_program_page():
+
+	school_name = request.form.get('school_name') #get form element according to name
+	specialty = request.form.get('specialty')
+	department = request.form.get('department_name')
+	params = {'school_name': school_name, 'specialty': specialty, 'department': department}
+	get_professors = requests.get("http://localhost:5001/get_professors", params = params)
+	professors = get_professors.json()
+	return render_template("search_professors.html", contents = professors)
+
 @app.route('/import', methods = ['GET'])
 def get_import():
 	tables = get_tables()
