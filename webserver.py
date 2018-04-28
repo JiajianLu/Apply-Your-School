@@ -134,8 +134,6 @@ def post_data():
 	print(contents)
 	return render_template('import.html', tables = tables, columns = columns, contents = contents)
 
-
-@app.route('/<program>/<school>', methods = ['GET'])
-def show_program_details(school):
-	contents = get_detail_content(program, school)
-	return render_template("Details.html", table = table, columns = columns, contents = contents)
+@app.route('/advanced', methods = ['GET'])
+def advanced_search():
+	return render_template("advanced.html", contents = contents)

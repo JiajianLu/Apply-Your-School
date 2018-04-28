@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Advanced Search</title>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	 <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Apply Your School</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/search/schools">Search schools</a></li>
+      <li><a href="/search/programs">Search programs</a></li>
+      <li><a href="/search/classes">Search classes</a></li>
+      <li><a href="/search/professors">Search professors</a></li>
+      <li><a href="/search/cities">Search cities</a></li>
+      <li><a href="/search/rankings">Search rankings</a></li>
+      <li><a href="/advanced">Advanced searching</a></li>
+    </ul>
+  </div>
+</nav>
+<h1>Advanced Searching</h1>
+<p>I am interested in finding</p>
+<div class="radio">
+  <label><input type="radio" name="optradio">Schools</label>
+</div>
+<div class="radio">
+  <label><input type="radio" name="optradio">Programs</label>
+</div>
+<p>Cities Attributes</p>
+ <div class="form-group">
+<label for="population_range">Population Range</label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="pop_range1" name="pop_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="pop_range2" name="pop_range2" placeholder="End"/>
+</div>
+</div>
+
+<div class="form-group">
+<label for="tem_range">Temperature Range (°F)</label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="tem_range1" name="tem_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="tem_range2" name="tem_range2" placeholder="End"/>
+</div>
+</div>
+<div class="form-group">
+<label for="crime_range">Violence Crime Range (Per 100,000 people)</label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="crime_range1" name="crime_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="crime_range2" name="crime_range2" placeholder="End"/>
+</div>
+</div>
+<div class="form-group">
+<label for="house_range">Monthly Housing Cost Range ($)</label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="house_range1" name="house_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="house_range2" name="house_range2" placeholder="End"/>
+</div>
+</div>
+<p>Professors Attributes</p>
+<div class="form-group">
+    <label for="department_name">Department Name</label>
+    <input class="form-control" id="department_name" name="department_name">
+  </div>
+  <div class="form-group">
+  <label for="specialty">Specialty</label>
+  <input class="form-control" id="specialty" name="specialty">
+</div>
+<p>Programs Attributes</p>
+<div class="form-group">
+  <label for="degree">Select Degree:</label>
+ <select class="form-control" id="degree" name="degree">
+  <option value="undergrad">Undergrad</option>
+  <option value="grad">Grad</option>
+</select>
+</div>
+<div class="form-group">
+<label for="tuition_range">Tuition Range</label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="tuition_range1" name="tuition_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="tuition_range2" name="tuition_range2" placeholder="End"/>
+</div>
+</div>
+<div class="form-group">
+<label for="salary_range">Average Starting Salary</label>
+  <div class="input-group">
+    <input type="text" class="form-control" id="salary_range1" name="salary_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="salary_range2" name="salary_range2" placeholder="End"/>
+</div>
+</div>
+<p>Rankings Attributes</p>
+  <div class="form-group">
+  <label for="source">Select Ranking Source:</label>
+ <select multiple class="form-control" id="source" name="source">
+  <option value="CWUR">CWUR</option>
+  <option value="SHANGHAI">SHANGHAI</option>
+  <option value="TIMES">TIMES</option>
+</select>
+</div>
+  <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
+</body>
+</html>
