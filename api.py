@@ -77,10 +77,6 @@ def get_school():
     # Read a single record
     	#get school_name from the passed parameters
         school_name = ['school_name', request.args.get('school_name')]
-        rank1 = ['rank1', request.args.get('rank1')]
-        rank2 = ['rank2', request.args.get('rank2')]
-        tuition1 = ['tuition1', request.args.get('tuition1')]
-        tuition2 = ['tuition2', request.args.get('tuition2')]
         ar1 = ['ar1', request.args.get('ar1')]
         ar2 = ['ar2', request.args.get('ar2')]
         size1 = ['size1', request.args.get('size1')]
@@ -97,7 +93,7 @@ def get_school():
         else:
         	states_list = tuple(states_list)
         states = ['states', states_list]
-        conditions = [school_name, rank1, rank2, states, tuition1, tuition2, ar1, ar2, size1, size2, campus1, campus2, sat1, sat2,act1,act2]
+        conditions = [school_name, states, ar1, ar2, size1, size2, campus1, campus2, sat1, sat2,act1,act2]
         not_empty_conditions = []
         for condition in conditions:
         	if condition[1]:

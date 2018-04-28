@@ -36,8 +36,6 @@ def get_index():
 @app.route('/search/schools', methods = ['POST'])
 def post_search():
 	name = request.form.get('school_name') #get form element according to name
-	tuition1 = request.form.get('tuition_range1')
-	tuition2 = request.form.get('tuition_range2')
 	ar1 = request.form.get('ar_range1') 
 	ar2 = request.form.get('ar_range2') 
 	size1 = request.form.get('size_range1')
@@ -137,6 +135,7 @@ def post_data():
 
 @app.route('/advanced', methods = ['GET'])
 def advanced_search():
+	interest = request.form['optradio'] #get value from radio tag
 	school_name = request.form.get('school_name') #get form element according to name
 	specialty = request.form.get('specialty')
 	department_name = request.form.get('department_name')
@@ -150,4 +149,21 @@ def advanced_search():
 	crime2 = request.form.get('crime_range2')
 	house1 = request.form.get('house_range1')
 	source = request.form.getlist('source')
+	rank1 = request.form.get('ranking_range1')
+	rank2 = request.form.get('ranking_range2')
+	degree = request.form.get('degree')
+	tuition1 = request.form.get('tuition_range1')
+	tuition2 = request.form.get('tuition_range2')
+	salary1 = request.form.get('salary_range1')
+	salary2 = request.form.get('salary_range2')
+	ar1 = request.form.get('ar_range1') 
+	ar2 = request.form.get('ar_range2') 
+	size1 = request.form.get('size_range1')
+	size2 = request.form.get('size_range2')
+	campus1 = request.form.get('campus_range1')
+	campus2 = request.form.get('campus_range2')
+	sat1 = request.form.get('sat_range1')
+	sat2 = request.form.get('sat_range2')
+	act1 = request.form.get('act_range1')
+	act2 = request.form.get('act_range2')
 	return render_template("advanced.html", contents = contents)
