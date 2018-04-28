@@ -5,17 +5,17 @@ import json
 import pandas as pd
 import numpy as np
 
-column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'rank>=', 'rank2': 'rank<=',
+column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'WORLD_RANKING>=', 'rank2': 'WORLD_RANKING<=',
 				 'states':'STATE_NAME in ', 
 				 'degree': 'DEGREE =', 'tuition1': '`TUITION_($)` >=', 'tuition2': '`TUITION_($)` <=',
                  'salary1': '`AVERAGE_STARTING_SALARY_($)` >=', 'salary2': '`AVERAGE_STARTING_SALARY_($)` <=',
                  'department_name': 'DEPARTMENT=',
                  'sources': 'SOURCE IN ',
                  'city_name': 'CITY_NAME=', 'pop1': 'POPULATION >=', 'pop2': 'POPULATION <=', 'tem1': '`AVERAGE_TEMP_(°F)` >=', 'tem2': '`AVERAGE_TEMP_(°F)` <=',
-                 'crime1': 'VIOLENT_CRIME_(PER_100,000_PEOPLE) <=', 'crime2': 'VIOLENT_CRIME_(PER_100,000_PEOPLE) >=',
-                 'house2': 'MONTHLY_HOUSING_COSTS_($) <=', 'house1': 'MONTHLY_HOUSING_COSTS_($) >=',
+                 'crime1': '`VIOLENT_CRIME_(PER_100,000_PEOPLE)` <=', 'crime2': '`VIOLENT_CRIME_(PER_100,000_PEOPLE)` >=',
+                 'house2': '`MONTHLY_HOUSING_COSTS_($)` <=', 'house1': '`MONTHLY_HOUSING_COSTS_($)` >=',
                  'specialty': 'SPECIALTY', 'size1': 'SIZE >=', 'size2': 'SIZE <=', 'ar1': 'ACCEPTANCE_RATE >=',
-                 'ar2': 'ACCEPTANCE_RATE <=', 'campus1': 'AREA_SIZE_(ACRE) >=', 'campus2' :'AREA_SIZE_(ACRE) <=', 
+                 'ar2': 'ACCEPTANCE_RATE <=', 'campus1': '`AREA_SIZE_(ACRE)` >=', 'campus2' :'`AREA_SIZE_(ACRE)` <=', 
                  'sat1':'50TH_PERCENTILE_SAT >=', 'sat2': '50TH_PERCENTILE_SAT <=', 'act1':'50TH_PERCENTILE_ACT >=', 'act2': '50TH_PERCENTILE_ACT <='
                  }
 
@@ -30,15 +30,15 @@ connection = pymysql.connect(host='localhost',
 def create_links_table():
     with connection.cursor() as cursor:
         #cursor.execute("DROP TABLE IF EXISTS `ADMISSION_STATS`")
-        #cursor.execute("DROP TABLE IF EXISTS `CITY_STATS`")
+        cursor.execute("DROP TABLE IF EXISTS `CITY_STATS`")
         # cursor.execute("DROP TABLE IF EXISTS `PROFESSOR_STATS`")
-        # cursor.execute("DROP TABLE IF EXISTS `PROGRAM_STATS`")
+        #cursor.execute("DROP TABLE IF EXISTS `PROGRAM_STATS`")
         # cursor.execute("DROP TABLE IF EXISTS `RANKING`")
         # cursor.execute("DROP TABLE IF EXISTS `SCHOOL_STATS`")
         cursor.execute("CREATE TABLE IF NOT EXISTS `ADMISSION_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`YEAR` int(11) DEFAULT NULL,`ACCEPTANCE_RATE` float DEFAULT NULL,`25TH_PERCENTILE_SAT` float DEFAULT NULL,`50TH_PERCENTILE_SAT` float DEFAULT NULL,`75TH_PERCENTILE_SAT` float DEFAULT NULL,`25TH_PERCENTILE_ACT` float DEFAULT NULL,`50TH_PERCENTILE_ACT` float DEFAULT NULL,`75TH_PERCENTILE_ACT` float DEFAULT NULL,`SIZE` float DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`))")
-        cursor.execute("CREATE TABLE IF NOT EXISTS `CITY_STATS` (`CITY_NAME` varchar(50) NOT NULL,`STATE_NAME` varchar(10) DEFAULT NULL,`POPULATION` int(11) DEFAULT NULL,`AVERAGE_TEMP_(°F)` float DEFAULT NULL,`PRECIPITATION (INCHES)` float DEFAULT NULL,`VIOLENT_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`PROPERTY_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`TOTAL_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`FATALITY_(PER_100,000_PEOPLE)` float DEFAULT NULL,`MONTHLY_HOUSING_COSTS($)` float DEFAULT NULL,PRIMARY KEY (`CITY_NAME`))")
+        cursor.execute("CREATE TABLE IF NOT EXISTS `CITY_STATS` (`CITY_NAME` varchar(50) NOT NULL,`STATE_NAME` varchar(10) DEFAULT NULL,`POPULATION` int(11) DEFAULT NULL,`AVERAGE_TEMP_(°F)` float DEFAULT NULL,`PRECIPITATION_(INCHES)` float DEFAULT NULL,`VIOLENT_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`PROPERTY_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`TOTAL_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`FATALITY_(PER_100,000_PEOPLE)` float DEFAULT NULL,`MONTHLY_HOUSING_COSTS($)` float DEFAULT NULL,PRIMARY KEY (`CITY_NAME`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `PROFESSOR_STATS` (`PROFESSOR_NAME` varchar(50) NOT NULL,`SCHOOL_NAME` varchar(50) DEFAULT NULL,`DEPARTMENT` varchar(50) DEFAULT NULL,`SPECIALTY` varchar(100) DEFAULT NULL,`RATINGS` float DEFAULT NULL,`TITLE` varchar(50) DEFAULT NULL,PRIMARY KEY (`PROFESSOR_NAME`))")
-        cursor.execute("CREATE TABLE IF NOT EXISTS `PROGRAM_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`DEPARTMENT` varchar(50) NOT NULL,`DEGREE` varchar(10) NOT NULL,`TUITION_($)` int(11) DEFAULT NULL,`AVERAGE_LENGTH_(YEAR)` int(11) DEFAULT NULL,`AVERAGE_STARTING_SALARY ($)` int(11) DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`,`DEPARTMENT`,`DEGREE`))")
+        cursor.execute("CREATE TABLE IF NOT EXISTS `PROGRAM_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`DEPARTMENT` varchar(50) NOT NULL,`DEGREE` varchar(10) NOT NULL,`TUITION_($)` int(11) DEFAULT NULL,`AVERAGE_LENGTH_(YEAR)` int(11) DEFAULT NULL,`AVERAGE_STARTING_SALARY_($)` int(11) DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`,`DEPARTMENT`,`DEGREE`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `RANKING` (`SOURCE` varchar(50) NOT NULL,`SCHOOL_NAME` varchar(50) NOT NULL,`WORLD_RANKING` int(11) DEFAULT NULL,`YEAR` int(11) DEFAULT NULL,PRIMARY KEY (`SOURCE`,`SCHOOL_NAME`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `SCHOOL_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`AREA_SIZE_(ACRE)` float DEFAULT NULL,`CITY` varchar(50) DEFAULT NULL,`APPLICATION_FEE_($)` int(11) DEFAULT NULL,`EARLY_ACTION_DEADLINE` date DEFAULT NULL, `STATE` varchar(10) DEFAULT NULL,`REGULAR_DEADLINE` date DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`))")
     connection.commit()
@@ -164,13 +164,15 @@ def get_rankings():
     with connection.cursor() as cursor:
         school_name = ['school_name', request.args.get('school_name')]
         source = request.args.getlist('source')
+        rank1 = ['rank1', request.args.get('rank1')]
+        rank2 = ['rank2', request.args.get('rank2')]
         #if condtion is not empty, then append sql
         if len(source)==1:
             source = "('" + str(source[0])+"')"
         else:
             source = tuple(source)
         sources = ['sources', source]
-        conditions = [sources, school_name]
+        conditions = [sources, school_name, rank1, rank2]
         not_empty_conditions = []
         for condition in conditions:
             if condition[1]:
@@ -308,4 +310,4 @@ def file_upload():
                     value+= (None,)
         cursor.execute(sql, value)
     connection.commit()
-    return "%s rows of Data were imported!" % (i+1)
+    return json.dumps("%s rows of " % (i+1)+ table+ " Data were imported!" )

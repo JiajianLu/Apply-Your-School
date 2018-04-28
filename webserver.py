@@ -36,8 +36,6 @@ def get_index():
 @app.route('/search/schools', methods = ['POST'])
 def post_search():
 	name = request.form.get('school_name') #get form element according to name
-	rank1 = request.form.get('ranking_range1')
-	rank2 = request.form.get('ranking_range2')
 	tuition1 = request.form.get('tuition_range1')
 	tuition2 = request.form.get('tuition_range2')
 	ar1 = request.form.get('ar_range1') 
@@ -77,6 +75,8 @@ def post_program_page():
 def post_ranking_page():
 	school_name = request.form.get('school_name')
 	source = request.form.getlist('source')
+	rank1 = request.form.get('ranking_range1')
+	rank2 = request.form.get('ranking_range2')
 	params = {'source': source, 'school_name': school_name}
 	get_rankings = requests.get("http://localhost:5001/get_rankings", params = params)
 	rankings = get_rankings.json()
@@ -100,12 +100,12 @@ def post_cities_page():
 	return render_template("search_cities.html", contents = cities)
 
 @app.route('/search/professors', methods = ['POST'])
-<<<<<<< HEAD
-def post_professor_page():
-=======
+#<<<<<<< HEAD
+#def post_professor_page():
+#=======
 def post_professors_page():
 
->>>>>>> cd3fcbf42fa31717aade36e43dc27a7492311585
+#>>>>>>> cd3fcbf42fa31717aade36e43dc27a7492311585
 	school_name = request.form.get('school_name') #get form element according to name
 	specialty = request.form.get('specialty')
 	department_name = request.form.get('department_name')
@@ -131,9 +131,23 @@ def post_data():
 	params = {'table': table}
 	tables = get_tables()
 	contents = requests.post("http://localhost:5001/import", files= files, params=params)
+	contents = contents.json()
 	print(contents)
-	return render_template('import.html', tables = tables, columns = columns, contents = contents)
+	return render_template('import.html', tables = tables, contents = contents)
 
 @app.route('/advanced', methods = ['GET'])
 def advanced_search():
+	school_name = request.form.get('school_name') #get form element according to name
+	specialty = request.form.get('specialty')
+	department_name = request.form.get('department_name')
+	city_name = request.form.get('city_name') #get form element according to name
+	states = request.form.getlist('states') #get form element according to name
+	pop1 = request.form.get('pop_range1')
+	pop2 = request.form.get('pop_range2')
+	tem1 = request.form.get('tem_range1')
+	tem2 = request.form.get('tem_range2')
+	crime1 = request.form.get('crime_range1')
+	crime2 = request.form.get('crime_range2')
+	house1 = request.form.get('house_range1')
+	source = request.form.getlist('source')
 	return render_template("advanced.html", contents = contents)
