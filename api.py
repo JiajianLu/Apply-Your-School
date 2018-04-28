@@ -77,6 +77,8 @@ def get_school():
     # Read a single record
     	#get school_name from the passed parameters
         school_name = ['school_name', request.args.get('school_name')]
+        tuition1 = ['tuition1', request.args.get('tuition1')]
+        tuition2 = ['tuition2', request.args.get('tuition2')]
         ar1 = ['ar1', request.args.get('ar1')]
         ar2 = ['ar2', request.args.get('ar2')]
         size1 = ['size1', request.args.get('size1')]
@@ -93,7 +95,7 @@ def get_school():
         else:
         	states_list = tuple(states_list)
         states = ['states', states_list]
-        conditions = [school_name, states, ar1, ar2, size1, size2, campus1, campus2, sat1, sat2,act1,act2]
+        conditions = [school_name, tuition1, tuition2, states, ar1, ar2, size1, size2, campus1, campus2, sat1, sat2,act1,act2]
         not_empty_conditions = []
         for condition in conditions:
         	if condition[1]:
@@ -270,7 +272,58 @@ def get_professors():
             professors.append(professor)
         return json.dumps(professors)
 
-
+@app.route('/advanced', methods = ['POST'])
+def advanced_search():
+    with connection.cursor() as cursor:
+        interest = request.args.get('interest')
+        school_name = ['school_name', request.args.get('school_name')]
+        department_name = ['department_name', request.args.get('department_name')]
+        specialty = ['specialty', request.args.get('specialty')]
+        source = request.args.getlist('source')
+        if len(source)==1:
+            source = "('" + str(source[0])+"')"
+        else:
+            source = tuple(source)
+        sources = ['sources', source]
+        city_name = ['city_name', request.args.get('city_name')]
+        states_list = request.args.getlist('states')
+        if len(states_list)==1:
+            states_list = "('" + str(states_list[0])+"')"
+        else:
+            states_list = tuple(states_list)
+        states = ['states', states_list]
+        pop1 = ['pop1', request.args.get('pop1')]
+        pop2 = ['pop2', request.args.get('pop2')]
+        tem1 = ['tem1', request.args.get('tem1')]
+        tem2 = ['tem2', request.args.get('tem2')]
+        crime1 = ['crime1', request.args.get('crime1')]
+        crime2 = ['crime2', request.args.get('crime2')]
+        house1 = ['house1', request.args.get('house1')]
+        house2 = ['house2', request.args.get('house2')]
+        rank1 = ['rank1', request.args.get('rank1')]
+        rank2 = ['rank2', request.args.get('rank2')]
+        department_name = ['department_name', request.args.get('department_name')]
+        degree = ['degree', request.args.get('degree')]
+        tuition1 = ['tuition1', request.args.get('tuition1')]
+        tuition2 = ['tuition2', request.args.get('tuition2')]
+        salary1 = ['salary1', request.args.get('salary1')]
+        salary2 = ['salary2', request.args.get('salary2')]
+        ar1 = ['ar1', request.args.get('ar1')]
+        ar2 = ['ar2', request.args.get('ar2')]
+        size1 = ['size1', request.args.get('size1')]
+        size2 = ['size2', request.args.get('size2')]
+        campus1 = ['campus1', request.args.get('campus1')]
+        campus2 = ['campus2', request.args.get('campus2')]
+        sat1 = ['sat1', request.args.get('sat1')]
+        sat2 = ['sat2', request.args.get('sat2')]
+        act1 = ['act1', request.args.get('sat2')]
+        act2 = ['act2', request.args.get('act2')]
+        conditions = [salary1, salary2, rank1, rank2, degree, tuition1, tuition2,sources, school_name, rank1, rank2, city_name, states, pop1, pop2, tem1, tem2, crime1, crime2, house1, house2,school_name, department, specialty,ar1, ar2, size1, size2, campus1, campus2, sat1, sat2,act1,act2]
+        not_empty_conditions = []
+        for condition in conditions:
+            if condition[1]:
+                not_empty_conditions.append(condition)
+        sql = "SELECT * FROM " + interest
 @app.route('/import', methods = ['POST'])
 def file_upload():
     with connection.cursor() as cursor:

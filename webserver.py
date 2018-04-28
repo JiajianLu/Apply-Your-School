@@ -36,6 +36,8 @@ def get_index():
 @app.route('/search/schools', methods = ['POST'])
 def post_search():
 	name = request.form.get('school_name') #get form element according to name
+	tuition1 = request.form.get('tuition_range1')
+	tuition2 = request.form.get('tuition_range2')
 	ar1 = request.form.get('ar_range1') 
 	ar2 = request.form.get('ar_range2') 
 	size1 = request.form.get('size_range1')
@@ -47,8 +49,7 @@ def post_search():
 	act1 = request.form.get('act_range1')
 	act2 = request.form.get('act_range2')
 	states = request.form.getlist('states')
-	params = {'school_name':name, 'rank1': rank1, 'rank2': rank2, 'states': states, 'tuition1': tuition1, 
-	'tuition2': tuition2, 'ar1':ar1, 'ar2':ar2, 'size1':size1, 'size2': size2, 'campus1':campus1, 'campus2': campus2,
+	params = {'tuition2': tuition2, 'tuition1': tuition1, 'school_name':name, 'states': states, 'ar1':ar1, 'ar2':ar2, 'size1':size1, 'size2': size2, 'campus1':campus1, 'campus2': campus2,
 	'sat1': sat1, 'sat2':sat2, 'act1':act1, 'act2': act2
 	}
 	get_schools = requests.get("http://localhost:5001/get_schools", params = params)
@@ -166,4 +167,12 @@ def advanced_search():
 	sat2 = request.form.get('sat_range2')
 	act1 = request.form.get('act_range1')
 	act2 = request.form.get('act_range2')
+	params = {'interest' : interest,
+			'city_name': city_name, 'states': states, 
+			'pop2': pop2, 'pop1': pop1,'tem2':tem2, 'tem1': tem1, 'crime2': crime2, 'crime1': crime1, 'house2': house2, 'house1': house1,
+			'school_name': school_name, 'specialty': specialty, 'department_name': department_name, 
+			'ar1':ar1, 'ar2':ar2, 'size1':size1, 'size2': size2, 'campus1':campus1, 'campus2': campus2,
+			'sat1': sat1, 'sat2':sat2, 'act1':act1, 'act2': act2,
+			'salary1': salary1, 'salary2': salary2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2}
+	contents = requests.post("http://localhost:5001/advanced", params=params)
 	return render_template("advanced.html", contents = contents)

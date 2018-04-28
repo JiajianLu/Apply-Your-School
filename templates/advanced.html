@@ -28,11 +28,52 @@
 <p>I am interested in finding</p>
 <form action="/advanced" method="POST">
 <div class="radio">
-  <label><input type="radio" name="optradio" value="school">Schools</label>
+  <label><input type="radio" name="optradio" value="SCHOOL_STATS">Schools</label>
 </div>
 <div class="radio">
-  <label><input type="radio" name="optradio". value="program">Programs</label>
+  <label><input type="radio" name="optradio". value="PROGRAM_STATS">Programs</label>
 </div>
+<p>Schools Attributes</p>
+<label for="tuition_range">Yearly Tuition Range</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="tuition_range1" name="tuition_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="tuition_range2" name="tuition_range2" placeholder="End"/>
+    </div>
+
+    <label for="ar_range">Acceptance Rate</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="ar_range1" name="ar_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="ar_range2" name="ar_range2" placeholder="End"/>
+    </div>
+
+    <label for="school_range">School Size</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="size_range1" name="size_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="size_range2" name="size_range2" placeholder="End"/>
+    </div>
+
+    <label for="campus_range">Campus Size (Acres)</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="campus_range1" name="campus_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="campus_range2" name="campus_range2" placeholder="End"/>
+    </div>
+
+    <label for="sat_range">Average SAT</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="sat_range1" name="sat_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="sat_range2" name="sat_range2" placeholder="End"/>
+    </div>
+    <label for="act_range">Average ACT</label>
+    <div class="input-group">
+    <input type="text" class="form-control" id="act_range1" name="act_range1" placeholder="Start"/>
+    <span class="input-group-addon">-</span>
+    <input type="text" class="form-control" id="act_range2" name="act_range2" placeholder="End"/>
+    </div>
 <p>Cities Attributes</p>
 <div class="form-group">
   <label for="sel1">Select States:</label>
