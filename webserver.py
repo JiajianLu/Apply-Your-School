@@ -36,8 +36,6 @@ def get_index():
 @app.route('/search/schools', methods = ['POST'])
 def post_search():
 	name = request.form.get('school_name') #get form element according to name
-	rank1 = request.form.get('ranking_range1')
-	rank2 = request.form.get('ranking_range2')
 	tuition1 = request.form.get('tuition_range1')
 	tuition2 = request.form.get('tuition_range2')
 	ar1 = request.form.get('ar_range1') 
@@ -51,8 +49,7 @@ def post_search():
 	act1 = request.form.get('act_range1')
 	act2 = request.form.get('act_range2')
 	states = request.form.getlist('states')
-	params = {'school_name':name, 'rank1': rank1, 'rank2': rank2, 'states': states, 'tuition1': tuition1, 
-	'tuition2': tuition2, 'ar1':ar1, 'ar2':ar2, 'size1':size1, 'size2': size2, 'campus1':campus1, 'campus2': campus2,
+	params = {'tuition2': tuition2, 'tuition1': tuition1, 'school_name':name, 'states': states, 'ar1':ar1, 'ar2':ar2, 'size1':size1, 'size2': size2, 'campus1':campus1, 'campus2': campus2,
 	'sat1': sat1, 'sat2':sat2, 'act1':act1, 'act2': act2
 	}
 	get_schools = requests.get("http://localhost:5001/get_schools", params = params)
@@ -77,6 +74,8 @@ def post_program_page():
 def post_ranking_page():
 	school_name = request.form.get('school_name')
 	source = request.form.getlist('source')
+	rank1 = request.form.get('ranking_range1')
+	rank2 = request.form.get('ranking_range2')
 	params = {'source': source, 'school_name': school_name}
 	get_rankings = requests.get("http://localhost:5001/get_rankings", params = params)
 	rankings = get_rankings.json()
@@ -100,8 +99,12 @@ def post_cities_page():
 	return render_template("search_cities.html", contents = cities)
 
 @app.route('/search/professors', methods = ['POST'])
+#<<<<<<< HEAD
+#def post_professor_page():
+#=======
 def post_professors_page():
 
+#>>>>>>> cd3fcbf42fa31717aade36e43dc27a7492311585
 	school_name = request.form.get('school_name') #get form element according to name
 	specialty = request.form.get('specialty')
 	department_name = request.form.get('department_name')
@@ -127,11 +130,49 @@ def post_data():
 	params = {'table': table}
 	tables = get_tables()
 	contents = requests.post("http://localhost:5001/import", files= files, params=params)
+	contents = contents.json()
 	print(contents)
-	return render_template('import.html', tables = tables, columns = columns, contents = contents)
+	return render_template('import.html', tables = tables, contents = contents)
 
-
-@app.route('/<program>/<school>', methods = ['GET'])
-def show_program_details(school):
-	contents = get_detail_content(program, school)
-	return render_template("Details.html", table = table, columns = columns, contents = contents)
+@app.route('/advanced', methods = ['GET'])
+def advanced_search():
+	interest = request.form['optradio'] #get value from radio tag
+	school_name = request.form.get('school_name') #get form element according to name
+	specialty = request.form.get('specialty')
+	department_name = request.form.get('department_name')
+	city_name = request.form.get('city_name') #get form element according to name
+	states = request.form.getlist('states') #get form element according to name
+	pop1 = request.form.get('pop_range1')
+	pop2 = request.form.get('pop_range2')
+	tem1 = request.form.get('tem_range1')
+	tem2 = request.form.get('tem_range2')
+	crime1 = request.form.get('crime_range1')
+	crime2 = request.form.get('crime_range2')
+	house1 = request.form.get('house_range1')
+	source = request.form.getlist('source')
+	rank1 = request.form.get('ranking_range1')
+	rank2 = request.form.get('ranking_range2')
+	degree = request.form.get('degree')
+	tuition1 = request.form.get('tuition_range1')
+	tuition2 = request.form.get('tuition_range2')
+	salary1 = request.form.get('salary_range1')
+	salary2 = request.form.get('salary_range2')
+	ar1 = request.form.get('ar_range1') 
+	ar2 = request.form.get('ar_range2') 
+	size1 = request.form.get('size_range1')
+	size2 = request.form.get('size_range2')
+	campus1 = request.form.get('campus_range1')
+	campus2 = request.form.get('campus_range2')
+	sat1 = request.form.get('sat_range1')
+	sat2 = request.form.get('sat_range2')
+	act1 = request.form.get('act_range1')
+	act2 = request.form.get('act_range2')
+	params = {'interest' : interest,
+			'city_name': city_name, 'states': states, 
+			'pop2': pop2, 'pop1': pop1,'tem2':tem2, 'tem1': tem1, 'crime2': crime2, 'crime1': crime1, 'house2': house2, 'house1': house1,
+			'school_name': school_name, 'specialty': specialty, 'department_name': department_name, 
+			'ar1':ar1, 'ar2':ar2, 'size1':size1, 'size2': size2, 'campus1':campus1, 'campus2': campus2,
+			'sat1': sat1, 'sat2':sat2, 'act1':act1, 'act2': act2,
+			'salary1': salary1, 'salary2': salary2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2}
+	contents = requests.post("http://localhost:5001/advanced", params=params)
+	return render_template("advanced.html", contents = contents)
