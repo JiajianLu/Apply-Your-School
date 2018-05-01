@@ -99,12 +99,8 @@ def post_cities_page():
 	return render_template("search_cities.html", contents = cities)
 
 @app.route('/search/professors', methods = ['POST'])
-#<<<<<<< HEAD
-#def post_professor_page():
-#=======
-def post_professors_page():
 
-#>>>>>>> cd3fcbf42fa31717aade36e43dc27a7492311585
+def post_professors_page():
 	school_name = request.form.get('school_name') #get form element according to name
 	specialty = request.form.get('specialty')
 	department_name = request.form.get('department_name')
@@ -134,7 +130,7 @@ def post_data():
 	print(contents)
 	return render_template('import.html', tables = tables, contents = contents)
 
-@app.route('/advanced', methods = ['GET'])
+@app.route('/search/advanced', methods = ['POST'])
 def advanced_search():
 	interest = request.form['optradio'] #get value from radio tag
 	school_name = request.form.get('school_name') #get form element according to name
@@ -167,12 +163,13 @@ def advanced_search():
 	sat2 = request.form.get('sat_range2')
 	act1 = request.form.get('act_range1')
 	act2 = request.form.get('act_range2')
+	attributes = request.form.getlist('attributes')
 	params = {'interest' : interest,
 			'city_name': city_name, 'states': states, 
 			'pop2': pop2, 'pop1': pop1,'tem2':tem2, 'tem1': tem1, 'crime2': crime2, 'crime1': crime1, 'house2': house2, 'house1': house1,
 			'school_name': school_name, 'specialty': specialty, 'department_name': department_name, 
 			'ar1':ar1, 'ar2':ar2, 'size1':size1, 'size2': size2, 'campus1':campus1, 'campus2': campus2,
 			'sat1': sat1, 'sat2':sat2, 'act1':act1, 'act2': act2,
-			'salary1': salary1, 'salary2': salary2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2}
-	contents = requests.post("http://localhost:5001/advanced", params=params)
-	return render_template("advanced.html", contents = contents)
+			'salary1': salary1, 'salary2': salary2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2, attributes: 'attributes'}
+	contents = requests.post("http://localhost:5001/search/advanced", params=params)
+	return render_template("search_advanced.html", contents = contents)
