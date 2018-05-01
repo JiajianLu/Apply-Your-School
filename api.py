@@ -6,8 +6,8 @@ import pandas as pd
 import numpy as np
 
 column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'WORLD_RANKING>=', 'rank2': 'WORLD_RANKING<=',
-				 'states':'STATE_NAME in ', 
-				 'degree': 'DEGREE =', 'tuition1': '`TUITION_($)` >=', 'tuition2': '`TUITION_($)` <=',
+                 'states':'STATE_NAME in ', 
+                 'degree': 'DEGREE =', 'tuition1': '`TUITION_($)` >=', 'tuition2': '`TUITION_($)` <=',
                  'salary1': '`AVERAGE_STARTING_SALARY_($)` >=', 'salary2': '`AVERAGE_STARTING_SALARY_($)` <=',
                  'department_name': 'DEPARTMENT=',
                  'sources': 'SOURCE IN ',
@@ -22,7 +22,7 @@ column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'WORLD_RANKING>=', 'rank2
 # Connect to the database
 connection = pymysql.connect(host='localhost',
                              user='root',
-                             password='123ace1994',
+                             password='password',
                              db='info257_database',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
@@ -75,7 +75,7 @@ def get_table_columns():
 def get_school():
     with connection.cursor() as cursor:
     # Read a single record
-    	#get school_name from the passed parameters
+        #get school_name from the passed parameters
         school_name = ['school_name', request.args.get('school_name')]
         tuition1 = ['tuition1', request.args.get('tuition1')]
         tuition2 = ['tuition2', request.args.get('tuition2')]
@@ -91,24 +91,24 @@ def get_school():
         act2 = ['act2', request.args.get('act2')]
         states_list = request.args.getlist('states')
         if len(states_list)==1:
-        	states_list = "('" + str(states_list[0])+"')"
+            states_list = "('" + str(states_list[0])+"')"
         else:
-        	states_list = tuple(states_list)
+            states_list = tuple(states_list)
         states = ['states', states_list]
         conditions = [school_name, tuition1, tuition2, states, ar1, ar2, size1, size2, campus1, campus2, sat1, sat2,act1,act2]
         not_empty_conditions = []
         for condition in conditions:
-        	if condition[1]:
-        		not_empty_conditions.append(condition)
+            if condition[1]:
+                not_empty_conditions.append(condition)
         sql = "SELECT * FROM SCHOOL_STATS INNER JOIN ADMISSION_STATS ON SCHOOL_STATS.SCHOOL_NAME = ADMISSION_STATS.SCHOOL_NAME WHERE "
         
         for condition in not_empty_conditions:
-        	if condition[1]:
-        		if isinstance(condition[1],str) and condition[1][0] != '(':
-        			condition[1] = "'"+condition[1]+"'"
-        		sql += column_dict[condition[0]] + str(condition[1]) + ' '
-        		if condition != not_empty_conditions[-1]:
-        			sql += 'AND '
+            if condition[1]:
+                if isinstance(condition[1],str) and condition[1][0] != '(':
+                    condition[1] = "'"+condition[1]+"'"
+                sql += column_dict[condition[0]] + str(condition[1]) + ' '
+                if condition != not_empty_conditions[-1]:
+                    sql += 'AND '
         print(sql)
         cursor.execute(sql)
 
@@ -272,7 +272,7 @@ def get_professors():
             professors.append(professor)
         return json.dumps(professors)
 
-@app.route('/advanced', methods = ['POST'])
+@app.route('/search/advanced', methods = ['POST'])
 def advanced_search():
     with connection.cursor() as cursor:
         interest = request.args.get('interest')
@@ -318,12 +318,60 @@ def advanced_search():
         sat2 = ['sat2', request.args.get('sat2')]
         act1 = ['act1', request.args.get('sat2')]
         act2 = ['act2', request.args.get('act2')]
-        conditions = [salary1, salary2, rank1, rank2, degree, tuition1, tuition2,sources, school_name, rank1, rank2, city_name, states, pop1, pop2, tem1, tem2, crime1, crime2, house1, house2,school_name, department, specialty,ar1, ar2, size1, size2, campus1, campus2, sat1, sat2,act1,act2]
+        attribute_list = request.args.getlist('attribute')
+
+        conditions = [salary1, salary2, rank1, rank2, degree, tuition1, tuition2,sources, school_name, rank1, rank2, 
+        city_name, states, pop1, pop2, tem1, tem2, crime1, crime2, house1, house2,school_name, department, specialty,
+        ar1, ar2, size1, size2, campus1, campus2, sat1, sat2,act1,act2]
         not_empty_conditions = []
+        desired_attributes =  []
+        alias_names = ['a','b','c','d']
         for condition in conditions:
             if condition[1]:
                 not_empty_conditions.append(condition)
-        sql = "SELECT * FROM " + interest
+                desired_attributes.append(condition[0])
+
+        current_table_name = interest
+
+        if interest == "PROGRAM_STATS":
+            name = alias_names.pop()            
+            interest = "(SELECT SCHOOL_STATS.*, DEPARTMENT, DEGREE, AVERAGE_LENGTH_(YEAR), AVERAGE_STARTING_SALARY_($) FROM PROGRAM_STATS INNER JOIN SCHOOL_STATS ON PROGRAM_STATS.SCHOOL_NAME = SCHOOL_STATS.SCHOOL_NAME) as " + name 
+            current_table_name = name
+        sql_table = interest
+
+        if any(x in ['POPULATION','`AVERAGE_TEMP_(°F)`','`VIOLENT_CRIME_(PER_100,000_PEOPLE)`','`MONTHLY_HOUSING_COSTS_($)`'] for x in attribute_list) or any(x in ['pop1','pop2', 'crime1','crime2','house1','house2','tem1','tem2'] for x in desired_attributes):
+            name = alias_names.pop()
+            sql_table = "(SELECT " + current_table_name + ".*, POPULATION, `AVERAGE_TEMP_(°F)`, `VIOLENT_CRIME_(PER_100,000_PEOPLE)`, `MONTHLY_HOUSING_COSTS_($)` FROM CITY_STATS INNER JOIN " + sql_table + " ON CITY_STATS.CITY = " + current_table_name + ".CITY) as " + name
+            current_table_name = name
+
+        admiss_attr = intersection(['ACCEPTANCE_RATE, 50TH_PERCENTILE_SAT, 50TH_PERCENTILE_ACT, SIZE'], attribute_list)
+        
+        if len(admiss_attr) > 0 or intersection(desired_attributes,['sat1','sat2', 'act1','act2','size1','size2','ar1','ar2'] > 0):
+            name = alias_names.pop()
+            sql_table = "(SELECT " + current_table_name + ".*, ACCEPTANCE_RATE, 50TH_PERCENTILE_SAT, 50TH_PERCENTILE_ACT, SIZE FROM " + sql_table + " INNER JOIN ADMISSION_STATS ON " + current_table_name + ".SCHOOL_NAME" + " = ADMISSION_STATS.SCHOOL_NAME ) as " + name
+        attribute_list =  ", ".join(attribute_list)
+
+
+        sql = "SELECT " + attribute_list + " FROM " + sql_table + "WHERE " 
+
+        for condition in not_empty_conditions:
+            if condition[1]:
+                if isinstance(condition[1],str) and condition[1][0] != '(':
+                    condition[1] = "'"+condition[1]+"'"
+                sql += column_dict[condition[0]] + str(condition[1]) + ' '
+                if condition != not_empty_conditions[-1]:
+                    sql += 'AND '
+
+        print(sql)
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        res = list()
+        for i in range(len(results)):
+            r = results[i]
+            res.append(professor)
+        return json.dumps(r)
+
+
 @app.route('/import', methods = ['POST'])
 def file_upload():
     with connection.cursor() as cursor:
