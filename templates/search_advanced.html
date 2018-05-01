@@ -9,7 +9,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <nav class="navbar navbar-inverse">
+    <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">Apply Your School</a>
@@ -20,59 +20,35 @@
       <li><a href="/search/professors">Search professors</a></li>
       <li><a href="/search/cities">Search cities</a></li>
       <li><a href="/search/rankings">Search rankings</a></li>
-      <li><a href="/search/advanced">Advanced searching</a></li>
     </ul>
   </div>
 </nav>
-<h1>Find a school to apply</h1>
-<form action="/search/schools" method="POST">
+<h1>Advanced Search</h1>
+<br>
+<h4>I am interested in:</h4>
+<div class="radio">
+  <label><input type="radio" name="optradio">Schools</label>
+</div>
+<div class="radio">
+  <label><input type="radio" name="optradio">Programs</label>
+</div>
+<h3>Select Attributes</h3>
+<form action="/search/advanced" method="POST">
+
+
+
   <div class="form-group">
     <label for="school_name">School Name</label>
     <input class="form-control" id="school_name" name="school_name">
   </div>
-
-    <label for="tuition_range">Yearly Tuition Range</label>
-    <div class="input-group">
-    <input type="text" class="form-control" id="tuition_range1" name="tuition_range1" placeholder="Start"/>
-    <span class="input-group-addon">-</span>
-    <input type="text" class="form-control" id="tuition_range2" name="tuition_range2" placeholder="End"/>
-    </div>
-
-    <label for="ar_range">Acceptance Rate</label>
-    <div class="input-group">
-    <input type="text" class="form-control" id="ar_range1" name="ar_range1" placeholder="Start"/>
-    <span class="input-group-addon">-</span>
-    <input type="text" class="form-control" id="ar_range2" name="ar_range2" placeholder="End"/>
-    </div>
-
-    <label for="school_range">School Size</label>
-    <div class="input-group">
-    <input type="text" class="form-control" id="size_range1" name="size_range1" placeholder="Start"/>
-    <span class="input-group-addon">-</span>
-    <input type="text" class="form-control" id="size_range2" name="size_range2" placeholder="End"/>
-    </div>
-
-    <label for="campus_range">Campus Size (Acres)</label>
-    <div class="input-group">
-    <input type="text" class="form-control" id="campus_range1" name="campus_range1" placeholder="Start"/>
-    <span class="input-group-addon">-</span>
-    <input type="text" class="form-control" id="campus_range2" name="campus_range2" placeholder="End"/>
-    </div>
-
-    <label for="sat_range">Average SAT</label>
-    <div class="input-group">
-    <input type="text" class="form-control" id="sat_range1" name="sat_range1" placeholder="Start"/>
-    <span class="input-group-addon">-</span>
-    <input type="text" class="form-control" id="sat_range2" name="sat_range2" placeholder="End"/>
-    </div>
-    <label for="act_range">Average ACT</label>
-    <div class="input-group">
-    <input type="text" class="form-control" id="act_range1" name="act_range1" placeholder="Start"/>
-    <span class="input-group-addon">-</span>
-    <input type="text" class="form-control" id="act_range2" name="act_range2" placeholder="End"/>
-    </div>
-
-
+    <div class="form-group">
+    <label for="department_name">Department Name</label>
+    <input class="form-control" id="department_name" name="department_name">
+  </div>
+  <div class="form-group">
+  <label for="specialty">Specialty</label>
+  <input class="form-control" id="specialty" name="specialty">
+</div>
 <div class="form-group">
   <label for="sel1">Select States:</label>
  <select multiple class="form-control" id="sel1" name="states">
@@ -135,38 +111,20 @@
   <table class="table table-striped">
     <thead>
       <tr>
+        <th>Professor Name</th>
         <th>School Name</th>
-        <th>State</th>
-        <th>City</th>
-        <th>Tuition</th>
-        <th>School Size</th>
-        <th>Campus Size</th>
-        <th>Average SAT</th>
-        <th>Average ACT</th>
-        <th>Acceptance Rate</th>
-        <th>Programs</th>
-        <th>Application Fee</th>
-        <th>Early Action Deadline</th>
-        <th>Regular Deadline</th>
+        <th>Department</th>
+        <th>Specialty</th>
+        <th>Title</th>
       </tr>
     </thead>
     <tbody>
       {%for content in contents%}
       <tr>
-
-        <td>{{content['SCHOOL_NAME']}}</td>
-        <td>{{content['STATE']}}</td>
-        <td>{{content['CITY']}}</td>
-        <td>{{content['TUITION_($)']}}</td>
-        <td>{{content['SIZE']}}</td>
-        <td>{{content['AREA_SIZE_(ACRE)']}}</td>
-        <td>{{content['50TH_PERCENTILE_SAT']}}</td>
-        <td>{{content['50TH_PERCENTILE_ACT']}}</td>
-        <td>{{content['ACCEPTANCE_RATE']}}</td>      
-        <td><a href="/program/{{content['school']}}">List of Programs</a></td>
-        <td>{{content['APPLICATION_FEE_($)']}}</td> 
-        <td>{{content['EARLY_ACTION_DEADLINE']}}</td> 
-        <td>{{content['REGULAR_DEADLINE']}}</td> 
+       <td>{{content['PROFESSOR_NAME']}}</td>
+       <td>{{content['SCHOOL_NAME']}}</td>
+       <td>{{content['DEPARTMENT_NAME']}}</td>
+       <td>{{content['TITLE']}}</td>
       </tr>
       {% endfor %}
     </tbody>
