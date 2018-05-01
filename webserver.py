@@ -145,6 +145,7 @@ def advanced_search():
 	crime1 = request.form.get('crime_range1')
 	crime2 = request.form.get('crime_range2')
 	house1 = request.form.get('house_range1')
+	house2 = request.form.get('house_range2')
 	source = request.form.getlist('source')
 	rank1 = request.form.get('ranking_range1')
 	rank2 = request.form.get('ranking_range2')
@@ -170,6 +171,10 @@ def advanced_search():
 			'school_name': school_name, 'specialty': specialty, 'department_name': department_name, 
 			'ar1':ar1, 'ar2':ar2, 'size1':size1, 'size2': size2, 'campus1':campus1, 'campus2': campus2,
 			'sat1': sat1, 'sat2':sat2, 'act1':act1, 'act2': act2,
-			'salary1': salary1, 'salary2': salary2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2, attributes: 'attributes'}
-	contents = requests.post("http://localhost:5001/search/advanced", params=params)
-	return render_template("search_advanced.html", contents = contents)
+			'salary1': salary1, 'salary2': salary2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2, 'attributes': attributes}
+	contents, def_columns, sel_columns = requests.post("http://localhost:5001/search/advanced", params=params)
+	contents = contents.json()
+	def_columns = def_columns.json()
+	sel_columns = sel_columns.json()
+	
+	return render_template("search_advanced.html", contents = contents, def_columns = def_columns, sel_columns= sel_columns)

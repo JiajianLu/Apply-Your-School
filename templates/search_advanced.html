@@ -234,5 +234,40 @@
 </div>
   <button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
   </form>
+  <div class="container">
+  <h2>Result Table</h2>       
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        {%for column in def_columns%}
+        <th>column</th>
+        {%endfor%}
+        {%for column in sel_columns%}
+        <th>column</th>
+        {%endfor%}
+
+        
+        <th>Early Action Deadline</th>
+        <th>Regular Deadline</th>
+        <th>Application Fee</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%for content in contents%}
+      <tr>
+        {%for dc in def_columns%}
+        <td>{{content[dc]}}</td>
+        {%endfor%}  
+        {%for sel in sel_columns%}
+        <td>{{content[sel]}}</td>
+        {%endfor%}
+        <td>{{content['EARLY_ACTION_DEADLINE']}}</td> 
+        <td>{{content['REGULAR_DEADLINE']}}</td> 
+        <td>{{content['APPLICATION_FEE_($)']}}</td> 
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 </body>
 </html>

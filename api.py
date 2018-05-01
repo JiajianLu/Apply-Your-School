@@ -22,10 +22,14 @@ column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'WORLD_RANKING>=', 'rank2
 # Connect to the database
 connection = pymysql.connect(host='localhost',
                              user='root',
-                             password='password',
+                             password='123ace1994',
                              db='info257_database',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
+
+def intersection(lst1, lst2):
+    lst3 = [value for value in lst1 if value in lst2]
+    return lst3
 
 def create_links_table():
     with connection.cursor() as cursor:
@@ -318,20 +322,37 @@ def advanced_search():
         sat2 = ['sat2', request.args.get('sat2')]
         act1 = ['act1', request.args.get('sat2')]
         act2 = ['act2', request.args.get('act2')]
-        attribute_list = request.args.getlist('attribute')
+        attributes = request.args.getlist('attributes')
+        attribute_list = list(attributes)
 
         conditions = [salary1, salary2, rank1, rank2, degree, tuition1, tuition2,sources, school_name, rank1, rank2, 
-        city_name, states, pop1, pop2, tem1, tem2, crime1, crime2, house1, house2,school_name, department, specialty,
+        city_name, states, pop1, pop2, tem1, tem2, crime1, crime2, house1, house2,school_name, department_name, specialty,
         ar1, ar2, size1, size2, campus1, campus2, sat1, sat2,act1,act2]
         not_empty_conditions = []
         desired_attributes =  []
         alias_names = ['a','b','c','d']
+        default_cols = "SCHOOL_NAME"
+        dc = ['SCHOOL_NAME']
+        if interest == "PROGRAM_STATS":
+            default_cols += ',DEPARTMENT, DEGREE'
+            dc.append('DEPARTMENT')
+            dc.append('DEGREE')
+        default_cols += ',CITY, STATE'
+        dc.append('CITY')
+        dc.append('STATE')
+
         for condition in conditions:
             if condition[1]:
-                not_empty_conditions.append(condition)
-                desired_attributes.append(condition[0])
+                
+                if condition[0] == 'degree' and interest == 'SCHOOL_STATS':
+                    continue
+                else:
+                    desired_attributes.append(condition[0])
+                    not_empty_conditions.append(condition)
+
 
         current_table_name = interest
+
 
         if interest == "PROGRAM_STATS":
             name = alias_names.pop()            
@@ -346,13 +367,14 @@ def advanced_search():
 
         admiss_attr = intersection(['ACCEPTANCE_RATE, 50TH_PERCENTILE_SAT, 50TH_PERCENTILE_ACT, SIZE'], attribute_list)
         
-        if len(admiss_attr) > 0 or intersection(desired_attributes,['sat1','sat2', 'act1','act2','size1','size2','ar1','ar2'] > 0):
+        if (len(admiss_attr) > 0 or len(intersection(desired_attributes,['sat1','sat2', 'act1','act2','size1','size2','ar1','ar2'])) > 0):
             name = alias_names.pop()
             sql_table = "(SELECT " + current_table_name + ".*, ACCEPTANCE_RATE, 50TH_PERCENTILE_SAT, 50TH_PERCENTILE_ACT, SIZE FROM " + sql_table + " INNER JOIN ADMISSION_STATS ON " + current_table_name + ".SCHOOL_NAME" + " = ADMISSION_STATS.SCHOOL_NAME ) as " + name
         attribute_list =  ", ".join(attribute_list)
+        attribute_list = ", " + attribute_list
+        print('attributes list', attribute_list)
 
-
-        sql = "SELECT " + attribute_list + " FROM " + sql_table + "WHERE " 
+        sql = "SELECT " + default_cols + attribute_list + ", EARLY_ACTION_DEADLINE, REGULAR_DEADLINE, `APPLICATION_FEE_($)` FROM " + sql_table + " WHERE " 
 
         for condition in not_empty_conditions:
             if condition[1]:
@@ -369,7 +391,8 @@ def advanced_search():
         for i in range(len(results)):
             r = results[i]
             res.append(professor)
-        return json.dumps(r)
+        print('resultss', res)
+        return json.dumps(res), json.dumps(dc), json.dumps(attributes)
 
 
 @app.route('/import', methods = ['POST'])
