@@ -8,7 +8,7 @@ import datetime
 
 column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'WORLD_RANKING>=', 'rank2': 'WORLD_RANKING<=',
                  'states':'STATE_NAME in ', 
-                 'degree': 'DEGREE =', 'tuition1': '`TUITION_($)` >=', 'tuition2': '`TUITION_($)` <=',
+                 'degree': 'DEGREE LIKE', 'tuition1': '`TUITION_($)` >=', 'tuition2': '`TUITION_($)` <=',
                  'salary1': '`AVERAGE_STARTING_SALARY_($)` >=', 'salary2': '`AVERAGE_STARTING_SALARY_($)` <=',
                  'department_name': 'DEPARTMENT=',
                  'sources': 'SOURCE IN ',
@@ -45,7 +45,7 @@ def create_links_table():
         # cursor.execute("DROP TABLE IF EXISTS `RANKING`")
         # cursor.execute("DROP TABLE IF EXISTS `SCHOOL_STATS`")
         cursor.execute("CREATE TABLE IF NOT EXISTS `ADMISSION_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`YEAR` int(11) DEFAULT NULL,`ACCEPTANCE_RATE` float DEFAULT NULL,`25TH_PERCENTILE_SAT` float DEFAULT NULL,`50TH_PERCENTILE_SAT` float DEFAULT NULL,`75TH_PERCENTILE_SAT` float DEFAULT NULL,`25TH_PERCENTILE_ACT` float DEFAULT NULL,`50TH_PERCENTILE_ACT` float DEFAULT NULL,`75TH_PERCENTILE_ACT` float DEFAULT NULL,`SIZE` float DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`))")
-        cursor.execute("CREATE TABLE IF NOT EXISTS `CITY_STATS` (`CITY_NAME` varchar(50) NOT NULL,`STATE_NAME` varchar(10) DEFAULT NULL,`POPULATION` int(11) DEFAULT NULL,`AVERAGE_TEMP_(°F)` float DEFAULT NULL,`PRECIPITATION_(INCHES)` float DEFAULT NULL,`VIOLENT_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`PROPERTY_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`TOTAL_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`FATALITY_(PER_100,000_PEOPLE)` float DEFAULT NULL,`MONTHLY_HOUSING_COSTS($)` float DEFAULT NULL,PRIMARY KEY (`CITY_NAME`))")
+        cursor.execute("CREATE TABLE IF NOT EXISTS `CITY_STATS` (`CITY_NAME` varchar(50) NOT NULL,`STATE_NAME` varchar(10) DEFAULT NULL,`POPULATION` int(11) DEFAULT NULL,`AVERAGE_TEMP_(°F)` float DEFAULT NULL,`PRECIPITATION_(INCHES)` float DEFAULT NULL,`VIOLENT_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`PROPERTY_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`TOTAL_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`FATALITY_(PER_100,000_PEOPLE)` float DEFAULT NULL,`MONTHLY_HOUSING_COSTS_($)` float DEFAULT NULL,PRIMARY KEY (`CITY_NAME`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `PROFESSOR_STATS` (`PROFESSOR_NAME` varchar(50) NOT NULL,`SCHOOL_NAME` varchar(50) DEFAULT NULL,`DEPARTMENT` varchar(50) DEFAULT NULL,`SPECIALTY` varchar(100) DEFAULT NULL,`RATINGS` float DEFAULT NULL,`TITLE` varchar(50) DEFAULT NULL,PRIMARY KEY (`PROFESSOR_NAME`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `PROGRAM_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`DEPARTMENT` varchar(50) NOT NULL,`DEGREE` varchar(10) NOT NULL,`TUITION_($)` int(11) DEFAULT NULL,`AVERAGE_LENGTH_(YEAR)` int(11) DEFAULT NULL,`AVERAGE_STARTING_SALARY_($)` int(11) DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`,`DEPARTMENT`,`DEGREE`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `RANKING` (`SOURCE` varchar(50) NOT NULL,`SCHOOL_NAME` varchar(50) NOT NULL,`WORLD_RANKING` int(11) DEFAULT NULL,`YEAR` int(11) DEFAULT NULL,PRIMARY KEY (`SOURCE`,`SCHOOL_NAME`))")
@@ -361,13 +361,13 @@ def advanced_search():
 
         if interest == "PROGRAM_STATS":
             name = alias_names.pop()            
-            interest = "(SELECT SCHOOL_STATS.*, DEPARTMENT, DEGREE, AVERAGE_LENGTH_(YEAR), AVERAGE_STARTING_SALARY_($) FROM PROGRAM_STATS INNER JOIN SCHOOL_STATS ON PROGRAM_STATS.SCHOOL_NAME = SCHOOL_STATS.SCHOOL_NAME) as " + name 
+            interest = "(SELECT SCHOOL_STATS.*, DEPARTMENT, DEGREE, `AVERAGE_LENGTH_(YEAR)`, `AVERAGE_STARTING_SALARY_($)` FROM PROGRAM_STATS INNER JOIN SCHOOL_STATS ON PROGRAM_STATS.SCHOOL_NAME = SCHOOL_STATS.SCHOOL_NAME) as " + name 
             current_table_name = name
         sql_table = interest
 
         if any(x in ['POPULATION','`AVERAGE_TEMP_(°F)`','`VIOLENT_CRIME_(PER_100,000_PEOPLE)`','`MONTHLY_HOUSING_COSTS_($)`'] for x in attribute_list) or any(x in ['pop1','pop2', 'crime1','crime2','house1','house2','tem1','tem2'] for x in desired_attributes):
             name = alias_names.pop()
-            sql_table = "(SELECT " + current_table_name + ".*, POPULATION, `AVERAGE_TEMP_(°F)`, `VIOLENT_CRIME_(PER_100,000_PEOPLE)`, `MONTHLY_HOUSING_COSTS_($)` FROM CITY_STATS INNER JOIN " + sql_table + " ON CITY_STATS.CITY = " + current_table_name + ".CITY) as " + name
+            sql_table = "(SELECT " + current_table_name + ".*, POPULATION, `AVERAGE_TEMP_(°F)`, `VIOLENT_CRIME_(PER_100,000_PEOPLE)`, `MONTHLY_HOUSING_COSTS_($)` FROM CITY_STATS INNER JOIN " + sql_table + " ON CITY_STATS.CITY_NAME = " + current_table_name + ".CITY) as " + name
             current_table_name = name
 
         admiss_attr = intersection(['ACCEPTANCE_RATE, 50TH_PERCENTILE_SAT, 50TH_PERCENTILE_ACT, SIZE'], attribute_list)
@@ -396,12 +396,9 @@ def advanced_search():
         for i in range(len(results)):
             r = results[i]
             res.append(r)
-        print('resultss', res)
-        res = json.dumps(res, default = myconverter)
         print(res)
-        print(dc)
-        print(attributes)
-        return res, dc, attributes
+        final_results = [res, dc, attributes]
+        return json.dumps(final_results, default = myconverter)
 
 
 @app.route('/import', methods = ['POST'])

@@ -172,9 +172,17 @@ def advanced_search():
 			'ar1':ar1, 'ar2':ar2, 'size1':size1, 'size2': size2, 'campus1':campus1, 'campus2': campus2,
 			'sat1': sat1, 'sat2':sat2, 'act1':act1, 'act2': act2,
 			'salary1': salary1, 'salary2': salary2, 'degree': degree, 'tuition1': tuition1, 'tuition2': tuition2, 'attributes': attributes}
-	contents, def_columns, sel_columns = requests.post("http://localhost:5001/search/advanced", params=params)
+	contents= requests.post("http://localhost:5001/search/advanced", params=params)
 	contents = contents.json()
-	def_columns = def_columns.json()
-	sel_columns = sel_columns.json()
-	
-	return render_template("search_advanced.html", contents = contents, def_columns = def_columns, sel_columns= sel_columns)
+	content = contents[0]
+	def_columns = contents[1]
+	sel_columns = contents[2]
+	revised_sels = []
+	for sel_col in sel_columns:
+		if sel_col[0] == '`':
+			revised_sel = sel_col[1:-1]
+			revised_sels.append(revised_sel)
+		else:
+			revised_sels.append(sel_col)
+	print(revised_sels)
+	return render_template("search_advanced.html", contents = content, def_columns = def_columns, sel_columns= revised_sels)

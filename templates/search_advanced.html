@@ -38,13 +38,13 @@
 <div class="form-group">
  <select multiple class="form-control" id="sel2" name="attributes">
   <option disabled selected value> -- Program Attributes (If selected) -- </option>
-  <option value="AVERAGE_LENGTH_(YEAR)">Average Length</option>
-  <option value="AVERAGE_STARTING_SALARY_($)">Average Starting Salary</option>
+  <option value="`AVERAGE_LENGTH_(YEAR)`">Average Length</option>
+  <option value="`AVERAGE_STARTING_SALARY_($)`">Average Starting Salary</option>
   <option disabled selected value> -- School Attributes -- </option>
-  <option value="TUITION_($)">Tuition</option>
+  <option value="`TUITION_($)`">Tuition</option>
   <option value="ACCEPTANCE_RATE">Acceptance Rate</option>
   <option value="SIZE">School Size</option>
-  <option value="AREA_SIZE_(ACRE)">Campus Size (Acres)</option>
+  <option value="`AREA_SIZE_(ACRE)`">Campus Size (Acres)</option>
   <option value="50TH_PERCENTILE_SAT">Average SAT Score</option>
   <option value="50TH_PERCENTILE_ACT">Average ACT Score </option>
   <option value="WORLD_RANKING">CWUR Ranking</option>
@@ -52,9 +52,9 @@
   <option value="WORLD_RANKING">Times Ranking</option>
   <option disabled selected value> -- City Attributes -- </option>
   <option value="POPULATION">Populaton</option>
-  <option value="AVERAGE_TEMP_(°F)">Avg Temperature</option>
-  <option value="VIOLENT_CRIME_(PER_100,000_PEOPLE)">Violence Crime</option>
-  <option value="MONTHLY_HOUSING_COSTS_($)">Monthly Housing Cost</option>
+  <option value="`AVERAGE_TEMP_(°F)`">Avg Temperature</option>
+  <option value="`VIOLENT_CRIME_(PER_100,000_PEOPLE)`">Violence Crime</option>
+  <option value="`MONTHLY_HOUSING_COSTS_($)`">Monthly Housing Cost</option>
 </select>       
 </div>
 
@@ -203,8 +203,8 @@
 <div class="form-group">
   <label for="degree">Select Degree:</label>
  <select class="form-control" id="degree" name="degree">
-  <option value="undergrad">Undergrad</option>
-  <option value="grad">Grad</option>
+  <option value="B%">Undergrad</option>
+  <option value="M%">Grad</option>
 </select>
 </div>
 <div class="form-group">
@@ -240,10 +240,10 @@
     <thead>
       <tr>
         {%for column in def_columns%}
-        <th>column</th>
+        <th>{{column}}</th>
         {%endfor%}
         {%for column in sel_columns%}
-        <th>column</th>
+        <th>{{column}}</th>
         {%endfor%}
 
         
