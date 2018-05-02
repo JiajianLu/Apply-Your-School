@@ -397,7 +397,11 @@ def advanced_search():
             r = results[i]
             res.append(r)
         print('resultss', res)
-        return json.dumps(res, default = myconverter), json.dumps(dc), json.dumps(attributes)
+        res = json.dumps(res, default = myconverter)
+        print(res)
+        print(dc)
+        print(attributes)
+        return res, dc, attributes
 
 
 @app.route('/import', methods = ['POST'])
