@@ -4,6 +4,7 @@ import requests
 import json
 import pandas as pd
 import numpy as np
+import datetime
 
 column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'WORLD_RANKING>=', 'rank2': 'WORLD_RANKING<=',
                  'states':'STATE_NAME in ', 
@@ -31,10 +32,14 @@ def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
     return lst3
 
+def myconverter(o):
+    if isinstance(o, datetime.date):
+        return o.__str__()
+
 def create_links_table():
     with connection.cursor() as cursor:
         #cursor.execute("DROP TABLE IF EXISTS `ADMISSION_STATS`")
-        cursor.execute("DROP TABLE IF EXISTS `CITY_STATS`")
+        #cursor.execute("DROP TABLE IF EXISTS `CITY_STATS`")
         # cursor.execute("DROP TABLE IF EXISTS `PROFESSOR_STATS`")
         #cursor.execute("DROP TABLE IF EXISTS `PROGRAM_STATS`")
         # cursor.execute("DROP TABLE IF EXISTS `RANKING`")
@@ -91,7 +96,7 @@ def get_school():
         campus2 = ['campus2', request.args.get('campus2')]
         sat1 = ['sat1', request.args.get('sat1')]
         sat2 = ['sat2', request.args.get('sat2')]
-        act1 = ['act1', request.args.get('sat2')]
+        act1 = ['act1', request.args.get('act1')]
         act2 = ['act2', request.args.get('act2')]
         states_list = request.args.getlist('states')
         if len(states_list)==1:
@@ -122,7 +127,7 @@ def get_school():
             school = results[i]
             schools.append(school)
         #print(schools)
-        return json.dumps(schools)
+        return json.dumps(schools, default = myconverter)
 
 @app.route('/get_programs', methods = ['GET'])
 def get_programs():
@@ -320,7 +325,7 @@ def advanced_search():
         campus2 = ['campus2', request.args.get('campus2')]
         sat1 = ['sat1', request.args.get('sat1')]
         sat2 = ['sat2', request.args.get('sat2')]
-        act1 = ['act1', request.args.get('sat2')]
+        act1 = ['act1', request.args.get('act1')]
         act2 = ['act2', request.args.get('act2')]
         attributes = request.args.getlist('attributes')
         attribute_list = list(attributes)
@@ -390,9 +395,9 @@ def advanced_search():
         res = list()
         for i in range(len(results)):
             r = results[i]
-            res.append(professor)
+            res.append(r)
         print('resultss', res)
-        return json.dumps(res), json.dumps(dc), json.dumps(attributes)
+        return json.dumps(res, default = myconverter), json.dumps(dc), json.dumps(attributes)
 
 
 @app.route('/import', methods = ['POST'])
