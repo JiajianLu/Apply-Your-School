@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import datetime
 
-column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'WORLD_RANKING>=', 'rank2': 'WORLD_RANKING<=',
+column_dict = {'school_name': 'SCHOOL_NAME LIKE ', 'rank1': 'WORLD_RANKING>=', 'rank2': 'WORLD_RANKING<=',
                  'states':'STATE in ', 
                  'degree': 'DEGREE LIKE ', 'tuition1': '`TUITION_($)` >=', 'tuition2': '`TUITION_($)` <=',
                  'salary1': '`AVERAGE_STARTING_SALARY_($)` >=', 'salary2': '`AVERAGE_STARTING_SALARY_($)` <=',
@@ -23,7 +23,7 @@ column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'WORLD_RANKING>=', 'rank2
 # Connect to the database
 connection = pymysql.connect(host='localhost',
                              user='root',
-                             password='123ace1994',
+                             password='password',
                              db='info257_database',
                              charset='utf8mb4',
                              cursorclass=pymysql.cursors.DictCursor)
@@ -38,11 +38,11 @@ def myconverter(o):
 
 def create_links_table():
     with connection.cursor() as cursor:
-        cursor.execute("DROP TABLE IF EXISTS `ADMISSION_STATS`")
-        cursor.execute("DROP TABLE IF EXISTS `CITY_STATS`")
+        #cursor.execute("DROP TABLE IF EXISTS `ADMISSION_STATS`")
+        #cursor.execute("DROP TABLE IF EXISTS `CITY_STATS`")
         #cursor.execute("DROP TABLE IF EXISTS `PROFESSOR_STATS`")
-        cursor.execute("DROP TABLE IF EXISTS `PROGRAM_STATS`")
-        cursor.execute("DROP TABLE IF EXISTS `RANKING`")
+        #cursor.execute("DROP TABLE IF EXISTS `PROGRAM_STATS`")
+        #cursor.execute("DROP TABLE IF EXISTS `RANKING`")
         #cursor.execute("DROP TABLE IF EXISTS `SCHOOL_STATS`")
         cursor.execute("CREATE TABLE IF NOT EXISTS `ADMISSION_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`YEAR` int(11) DEFAULT NULL,`ACCEPTANCE_RATE` float DEFAULT NULL,`25TH_PERCENTILE_SAT` float DEFAULT NULL,`50TH_PERCENTILE_SAT` float DEFAULT NULL,`75TH_PERCENTILE_SAT` float DEFAULT NULL,`25TH_PERCENTILE_ACT` float DEFAULT NULL,`50TH_PERCENTILE_ACT` float DEFAULT NULL,`75TH_PERCENTILE_ACT` float DEFAULT NULL,`SIZE` float DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `CITY_STATS` (`CITY_NAME` varchar(50) NOT NULL,`STATE_NAME` varchar(10) DEFAULT NULL,`POPULATION` int(11) DEFAULT NULL,`AVERAGE_TEMP_(°F)` float DEFAULT NULL,`PRECIPITATION_(INCHES)` float DEFAULT NULL,`VIOLENT_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`PROPERTY_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`TOTAL_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`FATALITY_(PER_100,000_PEOPLE)` float DEFAULT NULL,`MONTHLY_HOUSING_COSTS_($)` float DEFAULT NULL,PRIMARY KEY (`CITY_NAME`))")
@@ -85,7 +85,7 @@ def get_school():
     with connection.cursor() as cursor:
     # Read a single record
         #get school_name from the passed parameters
-        school_name = ['school_name', request.args.get('school_name')]
+        school_name = ['school_name', '%' + request.args.get('school_name') + '%']
         tuition1 = ['tuition1', request.args.get('tuition1')]
         tuition2 = ['tuition2', request.args.get('tuition2')]
         ar1 = ['ar1', request.args.get('ar1')]
@@ -138,7 +138,7 @@ def get_programs():
         tuition2 = ['tuition2', request.args.get('tuition2')]
         salary1 = ['salary1', request.args.get('salary1')]
         salary2 = ['salary2', request.args.get('salary2')]
-        school_name = ['school_name', request.args.get('school_name')]
+        school_name = ['school_name', '%' + request.args.get('school_name') + '%']
         #if condtion is not empty, then append sql
         conditions = [department_name, school_name, salary1, salary2, degree, tuition1, tuition2]
         not_empty_conditions = []
@@ -169,7 +169,7 @@ def get_programs():
 @app.route('/get_rankings', methods = ['GET'])
 def get_rankings():
     with connection.cursor() as cursor:
-        school_name = ['school_name', request.args.get('school_name')]
+        school_name = ['school_name', '%' + request.args.get('school_name') + '%']
         source = request.args.getlist('source')
         rank1 = ['rank1', request.args.get('rank1')]
         rank2 = ['rank2', request.args.get('rank2')]
@@ -250,7 +250,7 @@ def get_cities():
 def get_professors():
     with connection.cursor() as cursor:
         print('in api')
-        school_name = ['school_name', request.args.get('school_name')]
+        school_name = ['school_name', '%' + request.args.get('school_name') + '%']
         department_name = ['department_name', request.args.get('department_name')]
         specialty = ['specialty', request.args.get('specialty')]
         states_list = request.args.getlist('states')
@@ -293,7 +293,7 @@ def get_professors():
 def advanced_search():
     with connection.cursor() as cursor:
         interest = request.args.get('interest')
-        school_name = ['school_name', request.args.get('school_name')]
+        school_name = ['school_name', '%' + request.args.get('school_name') + '%']
         department_name = ['department_name', request.args.get('department_name')]
         specialty = ['specialty', request.args.get('specialty')]
         source = request.args.getlist('source')
