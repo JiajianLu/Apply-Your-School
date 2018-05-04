@@ -7,7 +7,7 @@ import numpy as np
 import datetime
 
 column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'WORLD_RANKING>=', 'rank2': 'WORLD_RANKING<=',
-                 'states':'STATE_NAME in ', 
+                 'states':'STATE in ', 
                  'degree': 'DEGREE LIKE ', 'tuition1': '`TUITION_($)` >=', 'tuition2': '`TUITION_($)` <=',
                  'salary1': '`AVERAGE_STARTING_SALARY_($)` >=', 'salary2': '`AVERAGE_STARTING_SALARY_($)` <=',
                  'department_name': 'DEPARTMENT=',
@@ -38,12 +38,12 @@ def myconverter(o):
 
 def create_links_table():
     with connection.cursor() as cursor:
-        #cursor.execute("DROP TABLE IF EXISTS `ADMISSION_STATS`")
-        #cursor.execute("DROP TABLE IF EXISTS `CITY_STATS`")
-        # cursor.execute("DROP TABLE IF EXISTS `PROFESSOR_STATS`")
-        #cursor.execute("DROP TABLE IF EXISTS `PROGRAM_STATS`")
-        # cursor.execute("DROP TABLE IF EXISTS `RANKING`")
-        # cursor.execute("DROP TABLE IF EXISTS `SCHOOL_STATS`")
+        cursor.execute("DROP TABLE IF EXISTS `ADMISSION_STATS`")
+        cursor.execute("DROP TABLE IF EXISTS `CITY_STATS`")
+        #cursor.execute("DROP TABLE IF EXISTS `PROFESSOR_STATS`")
+        cursor.execute("DROP TABLE IF EXISTS `PROGRAM_STATS`")
+        cursor.execute("DROP TABLE IF EXISTS `RANKING`")
+        #cursor.execute("DROP TABLE IF EXISTS `SCHOOL_STATS`")
         cursor.execute("CREATE TABLE IF NOT EXISTS `ADMISSION_STATS` (`SCHOOL_NAME` varchar(50) NOT NULL,`YEAR` int(11) DEFAULT NULL,`ACCEPTANCE_RATE` float DEFAULT NULL,`25TH_PERCENTILE_SAT` float DEFAULT NULL,`50TH_PERCENTILE_SAT` float DEFAULT NULL,`75TH_PERCENTILE_SAT` float DEFAULT NULL,`25TH_PERCENTILE_ACT` float DEFAULT NULL,`50TH_PERCENTILE_ACT` float DEFAULT NULL,`75TH_PERCENTILE_ACT` float DEFAULT NULL,`SIZE` float DEFAULT NULL,PRIMARY KEY (`SCHOOL_NAME`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `CITY_STATS` (`CITY_NAME` varchar(50) NOT NULL,`STATE_NAME` varchar(10) DEFAULT NULL,`POPULATION` int(11) DEFAULT NULL,`AVERAGE_TEMP_(°F)` float DEFAULT NULL,`PRECIPITATION_(INCHES)` float DEFAULT NULL,`VIOLENT_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`PROPERTY_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`TOTAL_CRIME_(PER_100,000_PEOPLE)` float DEFAULT NULL,`FATALITY_(PER_100,000_PEOPLE)` float DEFAULT NULL,`MONTHLY_HOUSING_COSTS_($)` float DEFAULT NULL,PRIMARY KEY (`CITY_NAME`))")
         cursor.execute("CREATE TABLE IF NOT EXISTS `PROFESSOR_STATS` (`PROFESSOR_NAME` varchar(50) NOT NULL,`SCHOOL_NAME` varchar(50) DEFAULT NULL,`DEPARTMENT` varchar(50) DEFAULT NULL,`SPECIALTY` varchar(100) DEFAULT NULL,`RATINGS` float DEFAULT NULL,`TITLE` varchar(50) DEFAULT NULL,PRIMARY KEY (`PROFESSOR_NAME`))")
@@ -254,7 +254,11 @@ def get_professors():
         department_name = ['department_name', request.args.get('department_name')]
         specialty = ['specialty', request.args.get('specialty')]
         states_list = request.args.getlist('states')
-
+        if len(states_list)==1:
+            states_list = "('" + str(states_list[0])+"')"
+        else:
+            states_list = tuple(states_list)
+        states = ['states', states_list]
 
         source = request.args.getlist('source')
         #if condtion is not empty, then append sql
@@ -262,8 +266,9 @@ def get_professors():
             source = "('" + str(source[0])+"')"
         else:
             source = tuple(source)
-        conditions = [school_name, department_name, specialty]
+        conditions = [school_name, department_name, specialty, states]
         not_empty_conditions = []
+        sql = "SELECT PROFESSOR_STATS.* FROM PROFESSOR_STATS INNER JOIN SCHOOL_STATS ON PROFESSOR_STATS.SCHOOL_NAME = SCHOOL_STATS.SCHOOL_NAME WHERE "
         for condition in conditions:
             if condition[1]:
                 not_empty_conditions.append(condition)
@@ -437,6 +442,7 @@ def file_upload():
                         value+= (row_value,)
                 else:
                     value+= (None,)
+        print(sql)
         cursor.execute(sql, value)
     connection.commit()
     return json.dumps("%s rows of " % (i+1)+ table+ " Data were imported!" )
