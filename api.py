@@ -8,14 +8,14 @@ import datetime
 
 column_dict = {'school_name': 'SCHOOL_NAME=', 'rank1': 'WORLD_RANKING>=', 'rank2': 'WORLD_RANKING<=',
                  'states':'STATE_NAME in ', 
-                 'degree': 'DEGREE LIKE', 'tuition1': '`TUITION_($)` >=', 'tuition2': '`TUITION_($)` <=',
+                 'degree': 'DEGREE LIKE ', 'tuition1': '`TUITION_($)` >=', 'tuition2': '`TUITION_($)` <=',
                  'salary1': '`AVERAGE_STARTING_SALARY_($)` >=', 'salary2': '`AVERAGE_STARTING_SALARY_($)` <=',
                  'department_name': 'DEPARTMENT=',
                  'sources': 'SOURCE IN ',
                  'city_name': 'CITY_NAME=', 'pop1': 'POPULATION >=', 'pop2': 'POPULATION <=', 'tem1': '`AVERAGE_TEMP_(°F)` >=', 'tem2': '`AVERAGE_TEMP_(°F)` <=',
                  'crime1': '`VIOLENT_CRIME_(PER_100,000_PEOPLE)` <=', 'crime2': '`VIOLENT_CRIME_(PER_100,000_PEOPLE)` >=',
                  'house2': '`MONTHLY_HOUSING_COSTS_($)` <=', 'house1': '`MONTHLY_HOUSING_COSTS_($)` >=',
-                 'specialty': 'SPECIALTY', 'size1': 'SIZE >=', 'size2': 'SIZE <=', 'ar1': 'ACCEPTANCE_RATE >=',
+                 'specialty': 'SPECIALTY = ', 'size1': 'SIZE >=', 'size2': 'SIZE <=', 'ar1': 'ACCEPTANCE_RATE >=',
                  'ar2': 'ACCEPTANCE_RATE <=', 'campus1': '`AREA_SIZE_(ACRE)` >=', 'campus2' :'`AREA_SIZE_(ACRE)` <=', 
                  'sat1':'50TH_PERCENTILE_SAT >=', 'sat2': '50TH_PERCENTILE_SAT <=', 'act1':'50TH_PERCENTILE_ACT >=', 'act2': '50TH_PERCENTILE_ACT <='
                  }
@@ -140,7 +140,7 @@ def get_programs():
         salary2 = ['salary2', request.args.get('salary2')]
         school_name = ['school_name', request.args.get('school_name')]
         #if condtion is not empty, then append sql
-        conditions = [department_name, school_name, salary1, salary2, rank1, rank2, degree, tuition1, tuition2]
+        conditions = [department_name, school_name, salary1, salary2, degree, tuition1, tuition2]
         not_empty_conditions = []
         for condition in conditions:
             if condition[1]:
@@ -246,24 +246,27 @@ def get_cities():
 
         return json.dumps(cities)
 
-@app.route('/get_rankings', methods = ['GET'])
+@app.route('/get_professors', methods = ['GET'])
 def get_professors():
     with connection.cursor() as cursor:
+        print('in api')
         school_name = ['school_name', request.args.get('school_name')]
         department_name = ['department_name', request.args.get('department_name')]
         specialty = ['specialty', request.args.get('specialty')]
+        states_list = request.args.getlist('states')
+
+
         source = request.args.getlist('source')
         #if condtion is not empty, then append sql
         if len(source)==1:
             source = "('" + str(source[0])+"')"
         else:
             source = tuple(source)
-        conditions = [school_name, department, specialty]
+        conditions = [school_name, department_name, specialty]
         not_empty_conditions = []
         for condition in conditions:
             if condition[1]:
                 not_empty_conditions.append(condition)
-        sql = "SELECT * FROM PROFESSOR_STATS WHERE "
         
         for condition in not_empty_conditions:
             if condition[1]:
